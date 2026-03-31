@@ -1,22 +1,100 @@
 ---
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 border-b border-gray-800/50 backdrop-blur-md bg-[#0a0a0a]/80">
-  <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-    <span class="font-semibold text-white tracking-tight">ef.</span>
-    <div class="flex items-center gap-6 text-sm text-gray-400">
-      <a href="#skills" class="hover:text-white transition-colors">Skills</a>
-      <a href="#projects" class="hover:text-white transition-colors">Projects</a>
-      <a href="#about" class="hover:text-white transition-colors">About</a>
-      <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300" style="border-color: var(--border-subtle); background: rgba(6, 8, 15, 0.85); backdrop-filter: blur(16px) saturate(180%);">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#" class="font-bold text-lg tracking-tight" style="font-family: 'Syne', sans-serif;">
+      <span style="color: var(--accent);">e</span><span style="color: var(--text-primary);">f</span><span style="color: var(--text-muted);">.</span>
+    </a>
+
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium" style="color: var(--text-secondary);">
+      <a href="#skills" class="hover:text-[var(--text-primary)] transition-colors duration-200">Skills</a>
+      <a href="#projects" class="hover:text-[var(--text-primary)] transition-colors duration-200">Projects</a>
+      <a href="#about" class="hover:text-[var(--text-primary)] transition-colors duration-200">About</a>
+      <a href="#contact" class="hover:text-[var(--text-primary)] transition-colors duration-200">Contact</a>
       <a
         href="https://github.com/EmrahFidan"
         target="_blank"
         rel="noopener noreferrer"
-        class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 transition-colors"
+        class="px-4 py-2 rounded-full text-xs font-semibold tracking-wide uppercase transition-all duration-200"
+        style="background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(0, 255, 194, 0.2);"
+        onmouseenter="this.style.background='rgba(0,255,194,0.15)';this.style.borderColor='rgba(0,255,194,0.4)'"
+        onmouseleave="this.style.background='var(--accent-dim)';this.style.borderColor='rgba(0,255,194,0.2)'"
       >
         GitHub
       </a>
     </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="nav-toggle"
+      class="md:hidden flex flex-col gap-1.5 p-2"
+      aria-label="Toggle navigation"
+    >
+      <span class="block w-5 h-0.5 transition-all duration-300 origin-center" style="background: var(--text-secondary);" id="bar1"></span>
+      <span class="block w-5 h-0.5 transition-all duration-300" style="background: var(--text-secondary);" id="bar2"></span>
+      <span class="block w-3.5 h-0.5 transition-all duration-300 origin-center" style="background: var(--text-secondary);" id="bar3"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="md:hidden overflow-hidden transition-all duration-300"
+    style="max-height: 0; opacity: 0; border-top: 1px solid transparent;"
+  >
+    <div class="px-6 py-6 flex flex-col gap-4 text-sm font-medium" style="color: var(--text-secondary); background: rgba(6, 8, 15, 0.95);">
+      <a href="#skills" class="py-2 hover:text-[var(--text-primary)] transition-colors">Skills</a>
+      <a href="#projects" class="py-2 hover:text-[var(--text-primary)] transition-colors">Projects</a>
+      <a href="#about" class="py-2 hover:text-[var(--text-primary)] transition-colors">About</a>
+      <a href="#contact" class="py-2 hover:text-[var(--text-primary)] transition-colors">Contact</a>
+      <a
+        href="https://github.com/EmrahFidan"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="py-2 transition-colors"
+        style="color: var(--accent);"
+      >
+        GitHub ↗
+      </a>
+    </div>
   </div>
 </nav>
+
+<script>
+  const toggle = document.getElementById('nav-toggle')
+  const menu = document.getElementById('mobile-menu')
+  const bar1 = document.getElementById('bar1')
+  const bar2 = document.getElementById('bar2')
+  const bar3 = document.getElementById('bar3')
+  let open = false
+
+  toggle?.addEventListener('click', () => {
+    open = !open
+    if (menu) {
+      menu.style.maxHeight = open ? '300px' : '0'
+      menu.style.opacity = open ? '1' : '0'
+      menu.style.borderTopColor = open ? 'var(--border-subtle)' : 'transparent'
+    }
+    if (bar1) bar1.style.transform = open ? 'rotate(45deg) translate(2px, 5px)' : ''
+    if (bar2) bar2.style.opacity = open ? '0' : '1'
+    if (bar3) {
+      bar3.style.transform = open ? 'rotate(-45deg) translate(3px, -5px)' : ''
+      bar3.style.width = open ? '20px' : '14px'
+    }
+  })
+
+  menu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      open = false
+      if (menu) {
+        menu.style.maxHeight = '0'
+        menu.style.opacity = '0'
+      }
+      if (bar1) bar1.style.transform = ''
+      if (bar2) bar2.style.opacity = '1'
+      if (bar3) { bar3.style.transform = ''; bar3.style.width = '14px' }
+    })
+  })
+</script>

@@ -1,93 +1,85 @@
 ---
 const skills = {
-  frontend: ['React', 'React Native', 'Next.js', 'Astro', 'Tailwind CSS', 'TypeScript'],
-  backend: ['FastAPI', 'Firebase', 'Node.js', 'Python'],
-  aiml: ['YOLOv11', 'CTGAN', 'Groq', 'Gemini AI', 'Deep Learning', 'Computer Vision'],
-  tools: ['Git', 'Docker', 'Expo', 'Vite', 'Vercel', 'Netlify'],
-  other: ['Flutter', 'Dart', 'PostgreSQL', 'REST APIs'],
+  frontend: { items: ['React', 'React Native', 'Next.js', 'Astro', 'Tailwind CSS', 'TypeScript'], tag: 'tag-mint' },
+  backend: { items: ['FastAPI', 'Firebase', 'Node.js', 'Python'], tag: 'tag-purple' },
+  aiml: { items: ['YOLOv11', 'CTGAN', 'Groq', 'Gemini AI', 'Deep Learning', 'Computer Vision'], tag: 'tag-blue' },
+  tools: { items: ['Git', 'Docker', 'Expo', 'Vite', 'Vercel', 'Netlify'], tag: 'tag-amber' },
+  mobile: { items: ['Flutter', 'Dart', 'PostgreSQL', 'REST APIs'], tag: 'tag-neutral' },
 }
 ---
 
-<section id="skills" class="py-16 px-6">
+<section id="skills" class="py-24 px-6 relative">
+  <div class="glow-line max-w-6xl mx-auto mb-20 reveal"></div>
+
   <div class="max-w-6xl mx-auto">
-    <div class="mb-8">
-      <p class="text-sm text-cyan-500 font-medium tracking-wide uppercase mb-2">Tech Stack</p>
-      <h2 class="text-3xl font-bold text-white">Skills</h2>
+    <div class="mb-12 reveal">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color: var(--accent);">Expertise</p>
+      <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight" style="font-family: 'Syne', sans-serif;">Tech Stack</h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-5">
 
-      <!-- Frontend — wide card -->
-      <div class="bento-card md:col-span-2">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">🖥️</span>
-          <h3 class="font-semibold text-white">Frontend</h3>
+      <!-- Frontend — wide -->
+      <div class="card card-glow md:col-span-4 reveal reveal-delay-1">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: var(--accent-dim); border: 1px solid rgba(0, 255, 194, 0.15);">🖥️</div>
+          <h3 class="font-bold text-base" style="font-family: 'Syne', sans-serif;">Frontend</h3>
         </div>
         <div class="flex flex-wrap gap-2">
-          {skills.frontend.map(skill => (
-            <span class="px-3 py-1.5 text-sm rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-              {skill}
-            </span>
+          {skills.frontend.items.map(skill => (
+            <span class={`tag ${skills.frontend.tag}`}>{skill}</span>
           ))}
         </div>
       </div>
 
       <!-- Backend -->
-      <div class="bento-card md:col-span-2">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">⚙️</span>
-          <h3 class="font-semibold text-white">Backend</h3>
+      <div class="card card-purple md:col-span-2 reveal reveal-delay-2">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: var(--purple-dim); border: 1px solid rgba(123, 97, 255, 0.15);">⚙️</div>
+          <h3 class="font-bold text-base" style="font-family: 'Syne', sans-serif;">Backend</h3>
         </div>
         <div class="flex flex-wrap gap-2">
-          {skills.backend.map(skill => (
-            <span class="px-3 py-1.5 text-sm rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              {skill}
-            </span>
+          {skills.backend.items.map(skill => (
+            <span class={`tag ${skills.backend.tag}`}>{skill}</span>
           ))}
         </div>
       </div>
 
-      <!-- AI/ML — wide card -->
-      <div class="bento-card md:col-span-3">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">🤖</span>
-          <h3 class="font-semibold text-white">AI / Machine Learning</h3>
+      <!-- AI/ML — wide -->
+      <div class="card md:col-span-3 reveal reveal-delay-3" style="border-color: rgba(56, 139, 253, 0.15);">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(56, 139, 253, 0.08); border: 1px solid rgba(56, 139, 253, 0.15);">🤖</div>
+          <h3 class="font-bold text-base" style="font-family: 'Syne', sans-serif;">AI / Machine Learning</h3>
         </div>
         <div class="flex flex-wrap gap-2">
-          {skills.aiml.map(skill => (
-            <span class="px-3 py-1.5 text-sm rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
-              {skill}
-            </span>
+          {skills.aiml.items.map(skill => (
+            <span class={`tag ${skills.aiml.tag}`}>{skill}</span>
           ))}
         </div>
       </div>
 
       <!-- Tools -->
-      <div class="bento-card md:col-span-1">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">🛠️</span>
-          <h3 class="font-semibold text-white">Tools</h3>
+      <div class="card md:col-span-2 reveal reveal-delay-4">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(240, 180, 41, 0.08); border: 1px solid rgba(240, 180, 41, 0.15);">🛠️</div>
+          <h3 class="font-bold text-base" style="font-family: 'Syne', sans-serif;">Tools</h3>
         </div>
         <div class="flex flex-wrap gap-2">
-          {skills.tools.map(skill => (
-            <span class="px-3 py-1.5 text-sm rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
-              {skill}
-            </span>
+          {skills.tools.items.map(skill => (
+            <span class={`tag ${skills.tools.tag}`}>{skill}</span>
           ))}
         </div>
       </div>
 
-      <!-- Mobile & Other — full width -->
-      <div class="bento-card md:col-span-4">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">📱</span>
-          <h3 class="font-semibold text-white">Mobile & Other</h3>
+      <!-- Mobile & Other -->
+      <div class="card md:col-span-1 reveal reveal-delay-5">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(139, 148, 158, 0.06); border: 1px solid var(--border-subtle);">📱</div>
+          <h3 class="font-bold text-base" style="font-family: 'Syne', sans-serif;">Other</h3>
         </div>
         <div class="flex flex-wrap gap-2">
-          {skills.other.map(skill => (
-            <span class="px-3 py-1.5 text-sm rounded-lg bg-gray-700/50 text-gray-300 border border-gray-700">
-              {skill}
-            </span>
+          {skills.mobile.items.map(skill => (
+            <span class={`tag ${skills.mobile.tag}`}>{skill}</span>
           ))}
         </div>
       </div>

@@ -1,63 +1,67 @@
 ---
 ---
 
-<section id="about" class="py-16 px-6">
+<section id="about" class="py-24 px-6 relative">
+  <div class="glow-line max-w-6xl mx-auto mb-20 reveal"></div>
+
   <div class="max-w-6xl mx-auto">
-    <div class="mb-8">
-      <p class="text-sm text-cyan-500 font-medium tracking-wide uppercase mb-2">Background</p>
-      <h2 class="text-3xl font-bold text-white">About</h2>
+    <div class="mb-12 reveal">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color: var(--accent);">Background</p>
+      <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight" style="font-family: 'Syne', sans-serif;">About</h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-5">
 
       <!-- Bio — wide -->
-      <div class="bento-card md:col-span-3">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">👋</span>
-          <h3 class="font-semibold text-white">Hi there</h3>
+      <div class="card md:col-span-4 reveal reveal-delay-1" style="padding: 2.5rem;">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: var(--accent-dim); border: 1px solid rgba(0, 255, 194, 0.15);">👋</div>
+          <h3 class="font-bold text-base" style="font-family: 'Syne', sans-serif;">Hi there</h3>
         </div>
-        <p class="text-gray-400 leading-relaxed mb-3">
+        <p class="leading-relaxed mb-4" style="color: var(--text-secondary);">
           I'm a software developer focused on building full-stack web and mobile applications with a strong emphasis on AI integration. I enjoy working across the stack — from React/React Native frontends to Python/FastAPI backends and machine learning pipelines.
         </p>
-        <p class="text-gray-400 leading-relaxed">
+        <p class="leading-relaxed" style="color: var(--text-secondary);">
           My projects range from computer vision systems (YOLOv11 for plant disease detection) to synthetic data generation with CTGAN, SaaS platforms, and cross-platform mobile apps.
         </p>
       </div>
 
-      <!-- Status card -->
-      <div class="bento-card flex flex-col gap-3">
-        <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="text-sm text-emerald-400 font-medium">Available</span>
+      <!-- Status + Education stacked -->
+      <div class="md:col-span-2 flex flex-col gap-5">
+        <!-- Status -->
+        <div class="card card-glow reveal reveal-delay-2">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background: var(--accent);"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3" style="background: var(--accent);"></span>
+            </span>
+            <span class="text-sm font-semibold" style="color: var(--accent);">Available</span>
+          </div>
+          <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
+            Open to new opportunities and interesting projects.
+          </p>
         </div>
-        <p class="text-xs text-gray-500 leading-relaxed">
-          Open to new opportunities and interesting projects.
-        </p>
+
+        <!-- Education -->
+        <div class="card reveal reveal-delay-3">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: var(--purple-dim); border: 1px solid rgba(123, 97, 255, 0.15);">🎓</div>
+            <h3 class="font-bold text-sm" style="font-family: 'Syne', sans-serif;">Education</h3>
+          </div>
+          <p class="text-sm font-medium" style="color: var(--text-primary);">Computer Engineering</p>
+          <p class="text-xs mt-1" style="color: var(--text-muted);">Adnan Menderes University</p>
+        </div>
       </div>
 
-      <!-- Education -->
-      <div class="bento-card md:col-span-2">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">🎓</span>
-          <h3 class="font-semibold text-white">Education</h3>
-        </div>
-        <div>
-          <p class="text-white font-medium text-sm">Computer Engineering</p>
-          <p class="text-gray-500 text-sm mt-0.5">Adnan Menderes University</p>
-        </div>
-      </div>
-
-      <!-- Interests -->
-      <div class="bento-card md:col-span-2">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-xl">💡</span>
-          <h3 class="font-semibold text-white">Interests</h3>
+      <!-- Interests — wide -->
+      <div class="card md:col-span-6 reveal reveal-delay-4">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(240, 180, 41, 0.08); border: 1px solid rgba(240, 180, 41, 0.15);">💡</div>
+          <h3 class="font-bold text-base" style="font-family: 'Syne', sans-serif;">Interests</h3>
         </div>
         <div class="flex flex-wrap gap-2">
-          {['AI / ML', 'Computer Vision', 'Mobile Dev', 'Open Source', 'SaaS'].map(i => (
-            <span class="px-2.5 py-1 text-xs rounded-lg bg-gray-800 text-gray-400 border border-gray-700">
-              {i}
-            </span>
+          {['Artificial Intelligence', 'Computer Vision', 'Mobile Development', 'Open Source', 'SaaS Platforms', 'Deep Learning', 'Full-Stack Architecture'].map(i => (
+            <span class="tag tag-neutral">{i}</span>
           ))}
         </div>
       </div>

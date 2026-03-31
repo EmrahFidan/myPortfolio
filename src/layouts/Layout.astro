@@ -20,9 +20,23 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#06080F" />
     <title>{title}</title>
   </head>
-  <body class="bg-[#0a0a0a] text-gray-100 min-h-screen antialiased">
+  <body class="grain min-h-screen antialiased" style="background-color: var(--bg-deep); color: var(--text-primary);">
     <slot />
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible')
+            }
+          })
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      )
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    </script>
   </body>
 </html>

@@ -6,6 +6,18 @@ const projects = await fetchPublicRepos()
 const featured = projects.filter(p => p.featured)
 const rest = projects.filter(p => !p.featured)
 const all = [...featured, ...rest]
+
+// Assign mosaic sizes: hand-crafted pattern that tiles infinitely
+// Pattern repeats every 8 items: hero, tall, wide, sm, sm, wide, sm, sm
+const PATTERN: Array<'hero' | 'tall' | 'wide' | 'sm'> = [
+  'hero', 'tall', 'wide', 'sm',
+  'sm',   'wide', 'sm',  'sm',
+]
+
+function sizeFor(i: number, isFeatured: boolean): 'hero' | 'tall' | 'wide' | 'sm' {
+  if (!isFeatured) return 'sm'
+  return PATTERN[i % PATTERN.length]
+}
 ---
 
 <section id="projects" class="py-24 px-6 relative">
@@ -13,18 +25,20 @@ const all = [...featured, ...rest]
 
   <div class="max-w-6xl mx-auto">
 
-    <!-- Header + sticky filter bar -->
+    <!-- Header -->
     <div class="mb-8 reveal">
-      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
         <div>
           <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color: var(--accent);">Work</p>
           <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight" style="font-family: 'Bricolage Grotesque', sans-serif;">Projects</h2>
         </div>
       </div>
 
-      <!-- Filter bar — card-style, always visible -->
+      <!-- Filter bar -->
       <div class="filter-bar" id="filter-buttons">
-        <button data-filter="all" class="filter-btn active">All <span class="filter-count">{all.length}</span></button>
+        <button data-filter="all" class="filter-btn active">
+          All <span class="filter-count">{all.length}</span>
+        </button>
         <button data-filter="ai-ml" class="filter-btn">AI / ML</button>
         <button data-filter="web" class="filter-btn">Web</button>
         <button data-filter="mobile" class="filter-btn">Mobile</button>
@@ -32,21 +46,22 @@ const all = [...featured, ...rest]
       </div>
     </div>
 
-    <!-- Mosaic/tangram grid — dense, no gaps, important projects bigger -->
-    <div class="mosaic-grid" id="projects-grid">
+    <!-- Tangram mosaic grid -->
+    <div class="mosaic" id="projects-grid">
       {all.map((project, i) => {
-        // Assign mosaic sizes: featured = large (2x2), some featured = wide (2x1), rest = small (1x1)
-        let sizeClass = 'mosaic-sm'
-        if (project.featured) {
-          // Alternate between large square and wide rectangle for variety
-          sizeClass = i % 3 === 0 ? 'mosaic-lg' : 'mosaic-wide'
-        }
+        const size = sizeFor(i, project.featured)
         return (
           <div
             data-category={project.category}
-            class={`mosaic-item ${sizeClass} reveal reveal-delay-${Math.min((i % 5) + 1, 5)}`}
+            data-size={size}
+            class={`mosaic-cell mosaic-${size} reveal reveal-delay-${Math.min((i % 5) + 1, 5)}`}
           >
-            <ProjectCard project={project} featured={project.featured} delay={(i % 5) + 1} />
+            <ProjectCard
+              project={project}
+              featured={project.featured}
+              size={size}
+              delay={(i % 5) + 1}
+            />
           </div>
         )
       })}
@@ -56,131 +71,94 @@ const all = [...featured, ...rest]
 </section>
 
 <style>
-  /* ── Filter bar — card bg, sticky under navbar ── */
+  /* ── Filter bar ── */
   .filter-bar {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    padding: 0.75rem 1rem;
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    padding: 0.65rem 1rem;
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 1rem;
-    position: sticky;
-    top: 4.5rem;
-    z-index: 30;
-    backdrop-filter: blur(12px);
+    position: sticky; top: 4.25rem; z-index: 30;
+    backdrop-filter: blur(16px);
   }
-
   .filter-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.35rem 0.9rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border-radius: 9999px;
-    border: 1px solid var(--border-subtle);
-    background: transparent;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'Outfit', sans-serif;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.32rem 0.85rem; font-size: 0.78rem; font-weight: 500;
+    border-radius: 9999px; border: 1px solid var(--border-subtle);
+    background: transparent; color: var(--text-muted);
+    cursor: pointer; transition: all 0.2s ease; font-family: 'Outfit', sans-serif;
   }
-  .filter-btn:hover {
-    border-color: var(--border-hover);
-    color: var(--text-secondary);
-  }
+  .filter-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
   .filter-btn.active {
-    background: var(--accent-dim);
-    border-color: rgba(0, 255, 194, 0.3);
-    color: var(--accent);
+    background: var(--accent-dim); border-color: rgba(0,255,194,0.3); color: var(--accent);
   }
   .filter-count {
-    font-size: 0.65rem;
-    padding: 0.05rem 0.35rem;
-    border-radius: 9999px;
-    background: rgba(139,148,158,0.1);
-    color: var(--text-muted);
+    font-size: 0.62rem; padding: 0.04rem 0.32rem; border-radius: 9999px;
+    background: rgba(139,148,158,0.1); color: var(--text-muted);
   }
   .filter-btn.active .filter-count {
-    background: rgba(0,255,194,0.12);
-    color: var(--accent);
+    background: rgba(0,255,194,0.12); color: var(--accent);
   }
 
-  /* ── Mosaic grid — CSS Grid dense fill ── */
-  .mosaic-grid {
+  /* ── Mosaic grid — 12 columns, 280px base row ── */
+  .mosaic {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 260px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 280px;
     gap: 5px;
     grid-auto-flow: dense;
   }
 
-  /* Small: 1 col × 1 row */
-  .mosaic-sm {
-    grid-column: span 1;
-    grid-row: span 1;
+  /*
+   * hero  = 6 cols × 2 rows  (big showcase)
+   * tall  = 3 cols × 2 rows  (tall portrait)
+   * wide  = 6 cols × 1 row   (wide banner)
+   * sm    = 3 cols × 1 row   (standard square-ish)
+   */
+  .mosaic-hero { grid-column: span 6; grid-row: span 2; }
+  .mosaic-tall { grid-column: span 3; grid-row: span 2; }
+  .mosaic-wide { grid-column: span 6; grid-row: span 1; }
+  .mosaic-sm   { grid-column: span 3; grid-row: span 1; }
+
+  /* Cell fills card completely */
+  .mosaic-cell { min-height: 0; }
+  .mosaic-cell > div { height: 100%; }
+
+  /* Tablet: 6 col */
+  @media (max-width: 900px) {
+    .mosaic { grid-template-columns: repeat(6, 1fr); grid-auto-rows: 240px; }
+    .mosaic-hero { grid-column: span 6; grid-row: span 2; }
+    .mosaic-tall { grid-column: span 3; grid-row: span 2; }
+    .mosaic-wide { grid-column: span 6; grid-row: span 1; }
+    .mosaic-sm   { grid-column: span 3; grid-row: span 1; }
   }
 
-  /* Wide: 2 cols × 1 row */
-  .mosaic-wide {
-    grid-column: span 2;
-    grid-row: span 1;
-  }
-
-  /* Large: 2 cols × 2 rows */
-  .mosaic-lg {
-    grid-column: span 2;
-    grid-row: span 2;
-  }
-
-  /* Make ProjectCard fill its mosaic cell fully */
-  .mosaic-item {
-    min-height: 0;
-  }
-
-  .mosaic-item > div {
-    height: 100%;
-  }
-
-  /* Responsive — collapse to 2 cols on tablet */
-  @media (max-width: 768px) {
-    .mosaic-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: 240px;
-    }
-  }
-
-  /* Responsive — single col on mobile */
-  @media (max-width: 480px) {
-    .mosaic-grid {
-      grid-template-columns: 1fr;
-      grid-auto-rows: auto;
-    }
-    .mosaic-sm, .mosaic-wide, .mosaic-lg {
-      grid-column: span 1;
-      grid-row: span 1;
+  /* Mobile: 2 col, flatten */
+  @media (max-width: 540px) {
+    .mosaic { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; }
+    .mosaic-hero, .mosaic-tall, .mosaic-wide, .mosaic-sm {
+      grid-column: span 2; grid-row: span 1;
     }
   }
 </style>
 
 <script>
   const buttons = document.querySelectorAll('.filter-btn')
-  const items = document.querySelectorAll('.mosaic-item[data-category]')
+  const cells   = document.querySelectorAll('.mosaic-cell[data-category]')
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       const filter = (btn as HTMLElement).dataset.filter
-
       buttons.forEach(b => b.classList.remove('active'))
       btn.classList.add('active')
 
-      items.forEach(item => {
-        const el = item as HTMLElement
-        if (filter === 'all' || el.dataset.category === filter) {
+      cells.forEach(cell => {
+        const el = cell as HTMLElement
+        const visible = filter === 'all' || el.dataset.category === filter
+        if (visible) {
           el.style.display = ''
           el.style.opacity = '0'
-          el.style.transform = 'scale(0.96)'
+          el.style.transform = 'scale(0.97)'
           requestAnimationFrame(() => {
             el.style.transition = 'opacity 0.3s ease, transform 0.3s ease'
             el.style.opacity = '1'

@@ -5,20 +5,26 @@ import ProjectCard from './ProjectCard.astro'
 const projects = await fetchPublicRepos()
 const featured = projects.filter(p => p.featured)
 const rest = projects.filter(p => !p.featured)
+const all = [...featured, ...rest]
 ---
 
 <section id="projects" class="py-24 px-6 relative">
   <div class="glow-line max-w-6xl mx-auto mb-20 reveal"></div>
 
   <div class="max-w-6xl mx-auto">
-    <div class="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 reveal">
-      <div>
-        <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color: var(--accent);">Work</p>
-        <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight" style="font-family: 'Bricolage Grotesque', sans-serif;">Projects</h2>
+
+    <!-- Header + sticky filter bar -->
+    <div class="mb-8 reveal">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-6">
+        <div>
+          <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color: var(--accent);">Work</p>
+          <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight" style="font-family: 'Bricolage Grotesque', sans-serif;">Projects</h2>
+        </div>
       </div>
-      <!-- Filter buttons -->
-      <div class="flex gap-2 flex-wrap" id="filter-buttons">
-        <button data-filter="all" class="filter-btn active">All</button>
+
+      <!-- Filter bar — card-style, always visible -->
+      <div class="filter-bar" id="filter-buttons">
+        <button data-filter="all" class="filter-btn active">All <span class="filter-count">{all.length}</span></button>
         <button data-filter="ai-ml" class="filter-btn">AI / ML</button>
         <button data-filter="web" class="filter-btn">Web</button>
         <button data-filter="mobile" class="filter-btn">Mobile</button>
@@ -26,41 +32,50 @@ const rest = projects.filter(p => !p.featured)
       </div>
     </div>
 
-    <!-- Featured projects — larger span, puzzle-like layout -->
-    {featured.length > 0 && (
-      <div class="grid grid-cols-1 md:grid-cols-6 gap-5 mb-5" id="featured-grid">
-        {featured.slice(0, 1).map((project, i) => (
-          <div data-category={project.category} class={`md:col-span-4 reveal reveal-delay-${Math.min(i+1,5)}`}>
-            <ProjectCard project={project} featured={true} delay={i + 1} />
+    <!-- Mosaic/tangram grid — dense, no gaps, important projects bigger -->
+    <div class="mosaic-grid" id="projects-grid">
+      {all.map((project, i) => {
+        // Assign mosaic sizes: featured = large (2x2), some featured = wide (2x1), rest = small (1x1)
+        let sizeClass = 'mosaic-sm'
+        if (project.featured) {
+          // Alternate between large square and wide rectangle for variety
+          sizeClass = i % 3 === 0 ? 'mosaic-lg' : 'mosaic-wide'
+        }
+        return (
+          <div
+            data-category={project.category}
+            class={`mosaic-item ${sizeClass} reveal reveal-delay-${Math.min((i % 5) + 1, 5)}`}
+          >
+            <ProjectCard project={project} featured={project.featured} delay={(i % 5) + 1} />
           </div>
-        ))}
-        {featured.slice(1, 3).map((project, i) => (
-          <div data-category={project.category} class={`md:col-span-2 reveal reveal-delay-${Math.min(i+2,5)}`}>
-            <ProjectCard project={project} featured={true} delay={i + 2} />
-          </div>
-        ))}
-        {featured.slice(3).map((project, i) => (
-          <div data-category={project.category} class={`md:col-span-3 reveal reveal-delay-${Math.min(i+3,5)}`}>
-            <ProjectCard project={project} featured={true} delay={i + 3} />
-          </div>
-        ))}
-      </div>
-    )}
-
-    <!-- Rest — 3-col grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="projects-grid">
-      {rest.map((project, i) => (
-        <div data-category={project.category} class={`reveal reveal-delay-${Math.min(i % 3 + 1, 5)}`}>
-          <ProjectCard project={project} featured={false} delay={i % 3 + 1} />
-        </div>
-      ))}
+        )
+      })}
     </div>
+
   </div>
 </section>
 
 <style>
+  /* ── Filter bar — card bg, sticky under navbar ── */
+  .filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    position: sticky;
+    top: 4.5rem;
+    z-index: 30;
+    backdrop-filter: blur(12px);
+  }
+
   .filter-btn {
-    padding: 0.4rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.9rem;
     font-size: 0.8rem;
     font-weight: 500;
     border-radius: 9999px;
@@ -77,14 +92,81 @@ const rest = projects.filter(p => !p.featured)
   }
   .filter-btn.active {
     background: var(--accent-dim);
-    border-color: rgba(0, 255, 194, 0.25);
+    border-color: rgba(0, 255, 194, 0.3);
     color: var(--accent);
+  }
+  .filter-count {
+    font-size: 0.65rem;
+    padding: 0.05rem 0.35rem;
+    border-radius: 9999px;
+    background: rgba(139,148,158,0.1);
+    color: var(--text-muted);
+  }
+  .filter-btn.active .filter-count {
+    background: rgba(0,255,194,0.12);
+    color: var(--accent);
+  }
+
+  /* ── Mosaic grid — CSS Grid dense fill ── */
+  .mosaic-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 260px;
+    gap: 5px;
+    grid-auto-flow: dense;
+  }
+
+  /* Small: 1 col × 1 row */
+  .mosaic-sm {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  /* Wide: 2 cols × 1 row */
+  .mosaic-wide {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  /* Large: 2 cols × 2 rows */
+  .mosaic-lg {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  /* Make ProjectCard fill its mosaic cell fully */
+  .mosaic-item {
+    min-height: 0;
+  }
+
+  .mosaic-item > div {
+    height: 100%;
+  }
+
+  /* Responsive — collapse to 2 cols on tablet */
+  @media (max-width: 768px) {
+    .mosaic-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 240px;
+    }
+  }
+
+  /* Responsive — single col on mobile */
+  @media (max-width: 480px) {
+    .mosaic-grid {
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+    }
+    .mosaic-sm, .mosaic-wide, .mosaic-lg {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
   }
 </style>
 
 <script>
   const buttons = document.querySelectorAll('.filter-btn')
-  const wrappers = document.querySelectorAll('[data-category]')
+  const items = document.querySelectorAll('.mosaic-item[data-category]')
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -93,16 +175,16 @@ const rest = projects.filter(p => !p.featured)
       buttons.forEach(b => b.classList.remove('active'))
       btn.classList.add('active')
 
-      wrappers.forEach(wrapper => {
-        const el = wrapper as HTMLElement
+      items.forEach(item => {
+        const el = item as HTMLElement
         if (filter === 'all' || el.dataset.category === filter) {
           el.style.display = ''
           el.style.opacity = '0'
-          el.style.transform = 'translateY(12px)'
+          el.style.transform = 'scale(0.96)'
           requestAnimationFrame(() => {
             el.style.transition = 'opacity 0.3s ease, transform 0.3s ease'
             el.style.opacity = '1'
-            el.style.transform = 'translateY(0)'
+            el.style.transform = 'scale(1)'
           })
         } else {
           el.style.display = 'none'

@@ -7,17 +7,9 @@ const featured = projects.filter(p => p.featured)
 const rest = projects.filter(p => !p.featured)
 const all = [...featured, ...rest]
 
-// Assign mosaic sizes: hand-crafted pattern that tiles infinitely
-// Pattern repeats every 8 items: hero, tall, wide, sm, sm, wide, sm, sm
-const PATTERN: Array<'hero' | 'tall' | 'wide' | 'sm'> = [
-  'hero', 'tall', 'wide', 'sm',
-  'sm',   'wide', 'sm',  'sm',
-]
-
-function sizeFor(i: number, isFeatured: boolean): 'hero' | 'tall' | 'wide' | 'sm' {
-  if (!isFeatured) return 'sm'
-  return PATTERN[i % PATTERN.length]
-}
+// Bento size pattern — cycles through featured projects
+// hero=2×2, tall=1×2, wide=2×1, sm=1×1
+const FEATURED_SIZES: Array<'hero' | 'tall' | 'wide' | 'sm'> = ['hero', 'tall', 'wide', 'wide']
 ---
 
 <section id="projects" class="py-24 px-6 relative">
@@ -36,9 +28,7 @@ function sizeFor(i: number, isFeatured: boolean): 'hero' | 'tall' | 'wide' | 'sm
 
       <!-- Filter bar -->
       <div class="filter-bar" id="filter-buttons">
-        <button data-filter="all" class="filter-btn active">
-          All <span class="filter-count">{all.length}</span>
-        </button>
+        <button data-filter="all" class="filter-btn active">All <span class="filter-count">{all.length}</span></button>
         <button data-filter="ai-ml" class="filter-btn">AI / ML</button>
         <button data-filter="web" class="filter-btn">Web</button>
         <button data-filter="mobile" class="filter-btn">Mobile</button>
@@ -46,21 +36,25 @@ function sizeFor(i: number, isFeatured: boolean): 'hero' | 'tall' | 'wide' | 'sm
       </div>
     </div>
 
-    <!-- Tangram mosaic grid -->
-    <div class="mosaic" id="projects-grid">
+    <!-- Bento grid -->
+    <div class="bento" id="projects-grid">
       {all.map((project, i) => {
-        const size = sizeFor(i, project.featured)
+        const isFeatured = project.featured
+        const featuredIndex = featured.indexOf(project)
+        const size = isFeatured
+          ? (FEATURED_SIZES[featuredIndex] ?? 'sm')
+          : 'sm'
+
         return (
           <div
             data-category={project.category}
-            data-size={size}
-            class={`mosaic-cell mosaic-${size} reveal reveal-delay-${Math.min((i % 5) + 1, 5)}`}
+            class={`bento-cell bento-${size} reveal reveal-delay-${Math.min((i % 4) + 1, 5)}`}
           >
             <ProjectCard
               project={project}
-              featured={project.featured}
+              featured={isFeatured}
               size={size}
-              delay={(i % 5) + 1}
+              delay={(i % 4) + 1}
             />
           </div>
         )
@@ -89,62 +83,55 @@ function sizeFor(i: number, isFeatured: boolean): 'hero' | 'tall' | 'wide' | 'sm
     cursor: pointer; transition: all 0.2s ease; font-family: 'Outfit', sans-serif;
   }
   .filter-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
-  .filter-btn.active {
-    background: var(--accent-dim); border-color: rgba(0,255,194,0.3); color: var(--accent);
-  }
+  .filter-btn.active { background: var(--accent-dim); border-color: rgba(0,255,194,0.3); color: var(--accent); }
   .filter-count {
     font-size: 0.62rem; padding: 0.04rem 0.32rem; border-radius: 9999px;
     background: rgba(139,148,158,0.1); color: var(--text-muted);
   }
-  .filter-btn.active .filter-count {
-    background: rgba(0,255,194,0.12); color: var(--accent);
-  }
+  .filter-btn.active .filter-count { background: rgba(0,255,194,0.12); color: var(--accent); }
 
-  /* ── Mosaic grid — 12 columns, 280px base row ── */
-  .mosaic {
+  /* ── Bento grid ── */
+  .bento {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-auto-rows: 280px;
-    gap: 5px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
+    gap: 8px;
     grid-auto-flow: dense;
   }
 
-  /*
-   * hero  = 6 cols × 2 rows  (big showcase)
-   * tall  = 3 cols × 2 rows  (tall portrait)
-   * wide  = 6 cols × 1 row   (wide banner)
-   * sm    = 3 cols × 1 row   (standard square-ish)
-   */
-  .mosaic-hero { grid-column: span 6; grid-row: span 2; }
-  .mosaic-tall { grid-column: span 3; grid-row: span 2; }
-  .mosaic-wide { grid-column: span 6; grid-row: span 1; }
-  .mosaic-sm   { grid-column: span 3; grid-row: span 1; }
+  /* hero  = 2 col × 2 row */
+  .bento-hero { grid-column: span 2; grid-row: span 2; }
+  /* tall  = 1 col × 2 row */
+  .bento-tall { grid-column: span 1; grid-row: span 2; }
+  /* wide  = 2 col × 1 row */
+  .bento-wide { grid-column: span 2; grid-row: span 1; }
+  /* sm    = 1 col × 1 row */
+  .bento-sm   { grid-column: span 1; grid-row: span 1; }
 
-  /* Cell fills card completely */
-  .mosaic-cell { min-height: 0; }
-  .mosaic-cell > div { height: 100%; }
+  .bento-cell { min-height: 0; }
+  .bento-cell > div { height: 100%; }
 
-  /* Tablet: 6 col */
-  @media (max-width: 900px) {
-    .mosaic { grid-template-columns: repeat(6, 1fr); grid-auto-rows: 240px; }
-    .mosaic-hero { grid-column: span 6; grid-row: span 2; }
-    .mosaic-tall { grid-column: span 3; grid-row: span 2; }
-    .mosaic-wide { grid-column: span 6; grid-row: span 1; }
-    .mosaic-sm   { grid-column: span 3; grid-row: span 1; }
+  /* Tablet */
+  @media (max-width: 860px) {
+    .bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
+    .bento-hero { grid-column: span 2; grid-row: span 2; }
+    .bento-tall { grid-column: span 1; grid-row: span 2; }
+    .bento-wide { grid-column: span 2; grid-row: span 1; }
+    .bento-sm   { grid-column: span 1; grid-row: span 1; }
   }
 
-  /* Mobile: 2 col, flatten */
-  @media (max-width: 540px) {
-    .mosaic { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; }
-    .mosaic-hero, .mosaic-tall, .mosaic-wide, .mosaic-sm {
-      grid-column: span 2; grid-row: span 1;
+  /* Mobile */
+  @media (max-width: 480px) {
+    .bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .bento-hero, .bento-tall, .bento-wide, .bento-sm {
+      grid-column: span 1; grid-row: span 1;
     }
   }
 </style>
 
 <script>
   const buttons = document.querySelectorAll('.filter-btn')
-  const cells   = document.querySelectorAll('.mosaic-cell[data-category]')
+  const cells   = document.querySelectorAll('.bento-cell[data-category]')
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -157,15 +144,15 @@ function sizeFor(i: number, isFeatured: boolean): 'hero' | 'tall' | 'wide' | 'sm
         const visible = filter === 'all' || el.dataset.category === filter
         if (visible) {
           el.style.display = ''
-          el.style.opacity = '0'
-          el.style.transform = 'scale(0.97)'
           requestAnimationFrame(() => {
-            el.style.transition = 'opacity 0.3s ease, transform 0.3s ease'
+            el.style.transition = 'opacity 0.25s ease, transform 0.25s ease'
             el.style.opacity = '1'
             el.style.transform = 'scale(1)'
           })
         } else {
-          el.style.display = 'none'
+          el.style.opacity = '0'
+          el.style.transform = 'scale(0.96)'
+          setTimeout(() => { el.style.display = 'none' }, 250)
         }
       })
     })

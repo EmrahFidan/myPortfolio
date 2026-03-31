@@ -11,12 +11,11 @@ interface Props {
 const { project, featured = false, size = 'sm', delay = 0 } = Astro.props
 
 const categoryColors: Record<string, string> = {
-  'ai-ml': 'tag-blue',
-  'web': 'tag-mint',
-  'mobile': 'tag-purple',
-  'other': 'tag-amber',
+  'ai-ml': 'badge-blue',
+  'web': 'badge-mint',
+  'mobile': 'badge-purple',
+  'other': 'badge-amber',
 }
-
 const categoryLabels: Record<string, string> = {
   'ai-ml': 'AI / ML',
   'web': 'Web',
@@ -24,170 +23,196 @@ const categoryLabels: Record<string, string> = {
   'other': 'Other',
 }
 
+const isHero = size === 'hero'
+const isTall = size === 'tall'
+const isWide = size === 'wide'
+const isBig  = isHero || isTall   // show extra content
 const glowClass = featured ? 'card-glow' : ''
-const delayClass = delay ? `reveal-delay-${delay}` : ''
-const isLarge = size === 'hero' || size === 'tall'
-const isWide = size === 'wide' || size === 'hero'
 ---
 
 <div
   data-category={project.category}
-  class={`card ${glowClass} project-card project-card--${size} group flex flex-col h-full reveal ${delayClass}`}
+  class={`bento-card ${glowClass} ${size} group reveal ${delay ? `reveal-delay-${delay}` : ''}`}
 >
-  <!-- Top badge row -->
-  <div class="flex items-center gap-2 flex-wrap mb-3">
-    <span class={`badge ${categoryColors[project.category]}`}>
-      {categoryLabels[project.category]}
-    </span>
+  <!-- Badges -->
+  <div class="badges">
+    <span class={`badge ${categoryColors[project.category]}`}>{categoryLabels[project.category]}</span>
     {featured && <span class="badge badge-featured">★ Featured</span>}
     {project.liveUrl && <span class="badge badge-live">● Live</span>}
-    {project.stars > 0 && (
-      <span class="badge badge-stars">
-        ★ {project.stars}
-      </span>
-    )}
+    {project.stars > 0 && <span class="badge badge-stars">★ {project.stars}</span>}
   </div>
 
   <!-- Title -->
-  <h3
-    class={`font-extrabold transition-colors duration-200 group-hover:text-[var(--accent)] mb-2 ${isLarge ? 'text-2xl' : 'text-base'}`}
-    style="font-family: 'Bricolage Grotesque', sans-serif; color: var(--text-primary);"
-  >
+  <h3 class={`title ${isHero ? 'title-xl' : isTall ? 'title-lg' : 'title-sm'} group-hover:text-[var(--accent)]`}>
     {project.name}
   </h3>
 
   <!-- Description -->
-  <p class={`leading-relaxed ${isLarge ? 'text-sm mb-3' : 'text-xs mb-2'}`} style="color: var(--text-secondary);">
+  <p class={`desc ${isBig ? 'desc-lg' : 'desc-sm'}`}>
     {project.description}
   </p>
 
-  <!-- README excerpt — only in large/wide cards when available -->
-  {(isLarge || isWide) && project.readme && (
-    <p class="text-xs leading-relaxed mb-4 line-clamp-3" style="color: var(--text-muted); border-left: 2px solid var(--border-subtle); padding-left: 0.75rem;">
+  <!-- README excerpt — hero & tall & wide only -->
+  {(isBig || isWide) && project.readme && (
+    <p class="readme-excerpt">
       {project.readme}
     </p>
   )}
 
-  <!-- README stats — key metrics as highlight pills -->
-  {isLarge && project.stats && project.stats.length > 0 && (
-    <div class="flex flex-wrap gap-2 mb-4">
+  <!-- Stats — hero & tall only -->
+  {isBig && project.stats && project.stats.length > 0 && (
+    <div class="stats-row">
       {project.stats.map(stat => (
         <span class="stat-pill">{stat}</span>
       ))}
     </div>
   )}
 
-  <!-- Spacer -->
-  <div class="flex-1" />
+  <div class="spacer" />
 
   <!-- Tech tags -->
-  <div class="flex flex-wrap gap-1.5 mb-3">
-    {project.tags.slice(0, isLarge ? 6 : 4).map((tag, i) => {
+  <div class="tags">
+    {project.tags.slice(0, isHero ? 6 : isWide ? 5 : 4).map((tag, i) => {
       const colors = ['tag-mint', 'tag-blue', 'tag-purple', 'tag-amber']
       return <span class={`tech-tag ${colors[i % colors.length]}`}>{tag}</span>
     })}
   </div>
 
-  <!-- Action buttons -->
-  <div class="flex gap-2">
+  <!-- Actions -->
+  <div class="actions">
     {project.liveUrl && (
-      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="action-primary flex-1">
+      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
         <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
         </svg>
-        <span>Live Site</span>
+        Live Site
       </a>
     )}
-    <a
-      href={project.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      class={`action-secondary ${project.liveUrl ? '' : 'flex-1'}`}
-    >
+    <a href={project.url} target="_blank" rel="noopener noreferrer" class={`btn-secondary ${project.liveUrl ? '' : 'flex-1'}`}>
       <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
         <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
       </svg>
-      <span>GitHub</span>
+      GitHub
     </a>
   </div>
 </div>
 
 <style>
-  .project-card { padding: 1.5rem; }
-  .project-card--hero { padding: 2rem; }
-  .project-card--tall { padding: 1.75rem; }
+  /* ── Base card ── */
+  .bento-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1.5rem;
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    height: 100%;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+  }
+  .bento-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .bento-card.card-glow:hover {
+    border-color: rgba(0,255,194,0.3);
+    box-shadow: 0 8px 40px rgba(0,255,194,0.07), inset 0 1px 0 rgba(0,255,194,0.05);
+  }
 
-  /* ── Top badges ── */
+  /* Size-specific padding */
+  .bento-card.hero { padding: 2rem; }
+  .bento-card.tall { padding: 1.6rem; }
+  .bento-card.wide { padding: 1.5rem; }
+
+  /* ── Badges ── */
+  .badges { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
   .badge {
-    font-size: 0.57rem; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; padding: 0.18rem 0.48rem;
+    font-size: 0.56rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 0.16rem 0.44rem;
     border-radius: 0.3rem; border: 1px solid;
   }
-  .badge.tag-blue   { color: #58A6FF; background: rgba(56,139,253,0.12); border-color: rgba(56,139,253,0.3); }
-  .badge.tag-mint   { color: var(--accent); background: rgba(0,255,194,0.1); border-color: rgba(0,255,194,0.3); }
-  .badge.tag-purple { color: var(--purple); background: rgba(123,97,255,0.12); border-color: rgba(123,97,255,0.3); }
-  .badge.tag-amber  { color: #F0B429; background: rgba(240,180,41,0.1); border-color: rgba(240,180,41,0.3); }
+  .badge-blue   { color: #58A6FF; background: rgba(56,139,253,0.12); border-color: rgba(56,139,253,0.3); }
+  .badge-mint   { color: var(--accent); background: rgba(0,255,194,0.1); border-color: rgba(0,255,194,0.3); }
+  .badge-purple { color: var(--purple); background: rgba(123,97,255,0.12); border-color: rgba(123,97,255,0.3); }
+  .badge-amber  { color: #F0B429; background: rgba(240,180,41,0.1); border-color: rgba(240,180,41,0.3); }
+  .badge-featured { color: #F0B429; background: rgba(240,180,41,0.1); border-color: rgba(240,180,41,0.3); }
+  .badge-live   { color: var(--accent); background: rgba(0,255,194,0.08); border-color: rgba(0,255,194,0.35); }
+  .badge-stars  { color: #F0B429; background: rgba(240,180,41,0.06); border-color: rgba(240,180,41,0.15); }
 
-  .badge-featured {
-    font-size: 0.57rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 0.18rem 0.48rem; border-radius: 0.3rem; border: 1px solid;
-    color: #F0B429; background: rgba(240,180,41,0.1); border-color: rgba(240,180,41,0.3);
+  /* ── Title ── */
+  .title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    color: var(--text-primary);
+    font-weight: 800;
+    transition: color 0.2s ease;
+    line-height: 1.2;
   }
-  .badge-live {
-    font-size: 0.57rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 0.18rem 0.48rem; border-radius: 0.3rem; border: 1px solid;
-    color: var(--accent); background: rgba(0,255,194,0.08); border-color: rgba(0,255,194,0.35);
-  }
-  .badge-stars {
-    font-size: 0.57rem; font-weight: 600; padding: 0.18rem 0.48rem;
-    border-radius: 0.3rem; border: 1px solid;
-    color: #F0B429; background: rgba(240,180,41,0.06); border-color: rgba(240,180,41,0.15);
+  .title-xl { font-size: 1.5rem; }
+  .title-lg { font-size: 1.15rem; }
+  .title-sm { font-size: 0.95rem; }
+
+  /* ── Description ── */
+  .desc { color: var(--text-secondary); line-height: 1.55; }
+  .desc-lg { font-size: 0.85rem; }
+  .desc-sm { font-size: 0.78rem;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
 
-  /* ── Stat pills — README metrics ── */
+  /* ── README excerpt ── */
+  .readme-excerpt {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    border-left: 2px solid var(--border-subtle);
+    padding-left: 0.7rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── Stats ── */
+  .stats-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
   .stat-pill {
     font-size: 0.68rem; font-weight: 600;
-    padding: 0.25rem 0.65rem; border-radius: 0.5rem;
-    background: rgba(0,255,194,0.06);
-    border: 1px solid rgba(0,255,194,0.18);
-    color: var(--accent);
-    font-family: 'Bricolage Grotesque', sans-serif;
+    padding: 0.22rem 0.6rem; border-radius: 0.45rem;
+    background: rgba(0,255,194,0.06); border: 1px solid rgba(0,255,194,0.18);
+    color: var(--accent); font-family: 'Bricolage Grotesque', sans-serif;
   }
 
-  /* ── Bottom tech tags ── */
+  /* ── Tech tags ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
   .tech-tag {
-    font-size: 0.61rem; font-weight: 500;
-    padding: 0.14rem 0.48rem; border-radius: 9999px; border: 1px solid; opacity: 0.7;
+    font-size: 0.6rem; font-weight: 500;
+    padding: 0.13rem 0.45rem; border-radius: 9999px; border: 1px solid; opacity: 0.7;
   }
   .tech-tag.tag-mint   { color: var(--accent); background: var(--accent-dim); border-color: rgba(0,255,194,0.12); }
   .tech-tag.tag-blue   { color: #58A6FF; background: rgba(56,139,253,0.06); border-color: rgba(56,139,253,0.12); }
   .tech-tag.tag-purple { color: var(--purple); background: var(--purple-dim); border-color: rgba(123,97,255,0.12); }
   .tech-tag.tag-amber  { color: #F0B429; background: rgba(240,180,41,0.06); border-color: rgba(240,180,41,0.12); }
 
-  /* ── Action buttons ── */
-  .action-primary, .action-secondary {
-    display: flex; align-items: center; justify-content: center; gap: 0.4rem;
-    padding: 0.45rem 0.75rem; border-radius: 0.6rem;
-    font-size: 0.72rem; font-weight: 600;
-    transition: all 0.2s ease; text-decoration: none;
-    font-family: 'Outfit', sans-serif;
+  .spacer { flex: 1; }
+
+  /* ── Actions ── */
+  .actions { display: flex; gap: 0.4rem; }
+  .btn-primary, .btn-secondary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
+    padding: 0.4rem 0.7rem; border-radius: 0.55rem;
+    font-size: 0.7rem; font-weight: 600; text-decoration: none;
+    transition: all 0.2s ease; font-family: 'Outfit', sans-serif;
+    flex: 1;
   }
-  .action-primary {
+  .btn-primary {
     background: rgba(0,255,194,0.1); color: var(--accent);
     border: 1px solid rgba(0,255,194,0.25);
   }
-  .action-primary:hover { background: rgba(0,255,194,0.18); border-color: rgba(0,255,194,0.4); }
-  .action-secondary {
+  .btn-primary:hover { background: rgba(0,255,194,0.18); border-color: rgba(0,255,194,0.4); }
+  .btn-secondary {
     background: rgba(139,148,158,0.06); color: var(--text-secondary);
     border: 1px solid var(--border-subtle);
   }
-  .action-secondary:hover { background: rgba(139,148,158,0.12); color: var(--text-primary); border-color: var(--border-hover); }
-
-  /* line-clamp utility */
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+  .btn-secondary:hover { background: rgba(139,148,158,0.12); color: var(--text-primary); border-color: var(--border-hover); }
 </style>

@@ -1,17 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import Navbar from '../components/Navbar.astro'
+import Hero from '../components/Hero.astro'
+import Skills from '../components/Skills.astro'
+import Projects from '../components/Projects.astro'
+import About from '../components/About.astro'
+import Footer from '../components/Footer.astro'
 ---
 
-<Layout title="Emrah Fidan — Portfolio">
-  <main class="max-w-4xl mx-auto px-6 py-20">
-    <section class="mb-20">
-      <h1 class="text-5xl font-bold mb-4">Emrah Fidan</h1>
-      <p class="text-xl text-gray-400">Software Developer</p>
-    </section>
-
-    <section>
-      <h2 class="text-2xl font-semibold mb-8 text-gray-300">Projects</h2>
-      <p class="text-gray-500">Coming soon...</p>
-    </section>
-  </main>
+<Layout
+  title="Emrah Fidan — Software Developer"
+  description="Portfolio of Emrah Fidan — Software developer building AI-powered web & mobile applications."
+>
+  <Navbar />
+  <Hero />
+  <Skills />
+  <Projects />
+  <About />
+  <Footer />
 </Layout>

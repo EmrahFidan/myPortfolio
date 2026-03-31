@@ -1,0 +1,97 @@
+---
+const skills = {
+  frontend: ['React', 'React Native', 'Next.js', 'Astro', 'Tailwind CSS', 'TypeScript'],
+  backend: ['FastAPI', 'Firebase', 'Node.js', 'Python'],
+  aiml: ['YOLOv11', 'CTGAN', 'Groq', 'Gemini AI', 'Deep Learning', 'Computer Vision'],
+  tools: ['Git', 'Docker', 'Expo', 'Vite', 'Vercel', 'Netlify'],
+  other: ['Flutter', 'Dart', 'PostgreSQL', 'REST APIs'],
+}
+---
+
+<section id="skills" class="py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-8">
+      <p class="text-sm text-cyan-500 font-medium tracking-wide uppercase mb-2">Tech Stack</p>
+      <h2 class="text-3xl font-bold text-white">Skills</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+      <!-- Frontend — wide card -->
+      <div class="bento-card md:col-span-2">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xl">🖥️</span>
+          <h3 class="font-semibold text-white">Frontend</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {skills.frontend.map(skill => (
+            <span class="px-3 py-1.5 text-sm rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Backend -->
+      <div class="bento-card md:col-span-2">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xl">⚙️</span>
+          <h3 class="font-semibold text-white">Backend</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {skills.backend.map(skill => (
+            <span class="px-3 py-1.5 text-sm rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- AI/ML — wide card -->
+      <div class="bento-card md:col-span-3">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xl">🤖</span>
+          <h3 class="font-semibold text-white">AI / Machine Learning</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {skills.aiml.map(skill => (
+            <span class="px-3 py-1.5 text-sm rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Tools -->
+      <div class="bento-card md:col-span-1">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xl">🛠️</span>
+          <h3 class="font-semibold text-white">Tools</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {skills.tools.map(skill => (
+            <span class="px-3 py-1.5 text-sm rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Mobile & Other — full width -->
+      <div class="bento-card md:col-span-4">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xl">📱</span>
+          <h3 class="font-semibold text-white">Mobile & Other</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {skills.other.map(skill => (
+            <span class="px-3 py-1.5 text-sm rounded-lg bg-gray-700/50 text-gray-300 border border-gray-700">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

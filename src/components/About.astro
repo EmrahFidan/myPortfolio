@@ -1,0 +1,67 @@
+---
+---
+
+<section id="about" class="py-16 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-8">
+      <p class="text-sm text-cyan-500 font-medium tracking-wide uppercase mb-2">Background</p>
+      <h2 class="text-3xl font-bold text-white">About</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+      <!-- Bio — wide -->
+      <div class="bento-card md:col-span-3">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xl">👋</span>
+          <h3 class="font-semibold text-white">Hi there</h3>
+        </div>
+        <p class="text-gray-400 leading-relaxed mb-3">
+          I'm a software developer focused on building full-stack web and mobile applications with a strong emphasis on AI integration. I enjoy working across the stack — from React/React Native frontends to Python/FastAPI backends and machine learning pipelines.
+        </p>
+        <p class="text-gray-400 leading-relaxed">
+          My projects range from computer vision systems (YOLOv11 for plant disease detection) to synthetic data generation with CTGAN, SaaS platforms, and cross-platform mobile apps.
+        </p>
+      </div>
+
+      <!-- Status card -->
+      <div class="bento-card flex flex-col gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-sm text-emerald-400 font-medium">Available</span>
+        </div>
+        <p class="text-xs text-gray-500 leading-relaxed">
+          Open to new opportunities and interesting projects.
+        </p>
+      </div>
+
+      <!-- Education -->
+      <div class="bento-card md:col-span-2">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xl">🎓</span>
+          <h3 class="font-semibold text-white">Education</h3>
+        </div>
+        <div>
+          <p class="text-white font-medium text-sm">Computer Engineering</p>
+          <p class="text-gray-500 text-sm mt-0.5">Adnan Menderes University</p>
+        </div>
+      </div>
+
+      <!-- Interests -->
+      <div class="bento-card md:col-span-2">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xl">💡</span>
+          <h3 class="font-semibold text-white">Interests</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {['AI / ML', 'Computer Vision', 'Mobile Dev', 'Open Source', 'SaaS'].map(i => (
+            <span class="px-2.5 py-1 text-xs rounded-lg bg-gray-800 text-gray-400 border border-gray-700">
+              {i}
+            </span>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

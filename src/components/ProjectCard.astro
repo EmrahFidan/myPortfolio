@@ -87,10 +87,14 @@ const delayClass = delay ? `reveal-delay-${delay}` : ''
 
   <!-- Tags -->
   <div class="flex flex-wrap gap-1.5 mt-auto">
-    {project.tags.slice(0, 4).map(tag => (
-      <span class="tag tag-neutral" style="font-size: 0.65rem; padding: 0.2rem 0.55rem;">
-        {tag}
-      </span>
-    ))}
+    {project.tags.slice(0, 4).map((tag, i) => {
+      const colors = ['tag-mint', 'tag-blue', 'tag-purple', 'tag-amber']
+      const colorClass = colors[i % colors.length]
+      return (
+        <span class={`tag ${colorClass}`} style="font-size: 0.65rem; padding: 0.2rem 0.55rem;">
+          {tag}
+        </span>
+      )
+    })}
   </div>
 </div>

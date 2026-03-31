@@ -12,23 +12,25 @@
 
     <div class="grid grid-cols-1 md:grid-cols-6 gap-5">
 
-      <!-- Bio — wide -->
+      <!-- Bio -->
       <div class="card md:col-span-4 reveal reveal-delay-1" style="padding: 2.5rem;">
         <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: var(--accent-dim); border: 1px solid rgba(0, 255, 194, 0.15);">👋</div>
-          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Hi there</h3>
+          <img src="/avatar.jpg" alt="Emrah Fidan" class="w-10 h-10 rounded-2xl object-cover" style="border: 1px solid rgba(0,255,194,0.2);" />
+          <div>
+            <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Emrah Fidan</h3>
+            <p class="text-xs" style="color: var(--text-muted);">Computer Engineer & AI Developer</p>
+          </div>
         </div>
-        <p class="leading-relaxed mb-4" style="color: var(--text-secondary);">
-          I'm a software developer focused on building full-stack web and mobile applications with a strong emphasis on AI integration. I enjoy working across the stack — from React/React Native frontends to Python/FastAPI backends and machine learning pipelines.
+        <p class="leading-relaxed mb-3" style="color: var(--text-secondary);">
+          Teknoloji ve psikoloji arasında köprüler kuran bir Bilgisayar Mühendisiyim. 6 yıl önce kurulan robotik startup'ında tek yazılımcı olarak YOLO tabanlı derin öğrenmeyle tarımsal İHA hastalık tespit sistemleri geliştiriyorum.
         </p>
         <p class="leading-relaxed" style="color: var(--text-secondary);">
-          My projects range from computer vision systems (YOLOv11 for plant disease detection) to synthetic data generation with CTGAN, SaaS platforms, and cross-platform mobile apps.
+          AIydın Teknoloji Zirvesi'ni kurarak 46 kişilik ekiple 1000+ katılımcıyı buluşturduk. Agile/Scrum metodolojileri ve oyunlaştırma teknikleriyle takımları yönetiyor, insan odaklı AI ürünleri geliştiriyorum.
         </p>
       </div>
 
       <!-- Status + Education stacked -->
       <div class="md:col-span-2 flex flex-col gap-5">
-        <!-- Status -->
         <div class="card card-glow reveal reveal-delay-2">
           <div class="flex items-center gap-3 mb-3">
             <span class="relative flex h-3 w-3">
@@ -38,29 +40,77 @@
             <span class="text-sm font-semibold" style="color: var(--accent);">Available</span>
           </div>
           <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
-            Open to new opportunities and interesting projects.
+            Yeni fırsatlara ve ilginç projelere açığım.
           </p>
         </div>
 
-        <!-- Education -->
         <div class="card reveal reveal-delay-3">
           <div class="flex items-center gap-3 mb-4">
             <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: var(--purple-dim); border: 1px solid rgba(123, 97, 255, 0.15);">🎓</div>
             <h3 class="font-bold text-sm" style="font-family: 'Bricolage Grotesque', sans-serif;">Education</h3>
           </div>
           <p class="text-sm font-medium" style="color: var(--text-primary);">Computer Engineering</p>
-          <p class="text-xs mt-1" style="color: var(--text-muted);">Adnan Menderes University</p>
+          <p class="text-xs mt-0.5" style="color: var(--text-muted);">Aydın Adnan Menderes University</p>
+          <p class="text-xs mt-0.5" style="color: var(--text-muted);">2021 – 2025 · GPA 3.47/4.00</p>
         </div>
       </div>
 
-      <!-- Interests — wide -->
+      <!-- Work Experience -->
+      <div class="card md:col-span-3 reveal reveal-delay-2" style="padding: 2rem;">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: var(--accent-dim); border: 1px solid rgba(0, 255, 194, 0.15);">💼</div>
+          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Experience</h3>
+        </div>
+        <div class="flex flex-col gap-5">
+          <div class="flex gap-3">
+            <div class="w-1.5 h-full min-h-[4rem] rounded-full mt-1" style="background: linear-gradient(to bottom, var(--accent), var(--purple)); flex-shrink: 0; width: 2px;"></div>
+            <div>
+              <p class="text-sm font-semibold" style="color: var(--text-primary);">AI & Image Processing Engineer</p>
+              <p class="text-xs font-medium mt-0.5" style="color: var(--accent);">ALPROBOTICS</p>
+              <p class="text-xs mt-0.5" style="color: var(--text-muted);">Oct 2024 – Present</p>
+              <p class="text-xs mt-2 leading-relaxed" style="color: var(--text-secondary);">YOLO-based deep learning for agricultural UAVs · 91.35% F1 score · Sole software engineer</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="w-0.5 min-h-[4rem] rounded-full mt-1 flex-shrink-0" style="background: linear-gradient(to bottom, var(--purple), transparent);"></div>
+            <div>
+              <p class="text-sm font-semibold" style="color: var(--text-primary);">Software Engineer</p>
+              <p class="text-xs font-medium mt-0.5" style="color: var(--purple);">PUSAY Havacılık</p>
+              <p class="text-xs mt-0.5" style="color: var(--text-muted);">Oct 2023 – 2024</p>
+              <p class="text-xs mt-2 leading-relaxed" style="color: var(--text-secondary);">Teknofest Savaşan İHA · YOLO + OpenCV · 92.78% accuracy · Image processing team lead</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Volunteer -->
+      <div class="card md:col-span-3 reveal reveal-delay-3" style="padding: 2rem;">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(240, 180, 41, 0.08); border: 1px solid rgba(240, 180, 41, 0.15);">🌟</div>
+          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Volunteer</h3>
+        </div>
+        <div class="flex flex-col gap-4">
+          <div>
+            <p class="text-sm font-semibold" style="color: var(--text-primary);">Founder & Organizer</p>
+            <p class="text-xs font-medium mt-0.5" style="color: #F0B429;">AIydın: Teknoloji Zirvesi</p>
+            <p class="text-xs mt-1 leading-relaxed" style="color: var(--text-secondary);">1000+ katılımcı · 45 kişilik gönüllü ekip · Üniversite-sanayi işbirliği</p>
+          </div>
+          <div>
+            <p class="text-sm font-semibold" style="color: var(--text-primary);">CS Dept. Leader & Scrum Master</p>
+            <p class="text-xs font-medium mt-0.5" style="color: var(--text-muted);">IEEE · ADU Teknopark</p>
+            <p class="text-xs mt-1 leading-relaxed" style="color: var(--text-secondary);">3 yazılım projesi · Agile/Scrum · 100+ öğrenciye algoritmik düşünme eğitimi</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interests -->
       <div class="card md:col-span-6 reveal reveal-delay-4">
         <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(240, 180, 41, 0.08); border: 1px solid rgba(240, 180, 41, 0.15);">💡</div>
-          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Interests</h3>
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(56, 139, 253, 0.08); border: 1px solid rgba(56, 139, 253, 0.15);">💡</div>
+          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Interests & Skills</h3>
         </div>
         <div class="flex flex-wrap gap-2">
-          {['Artificial Intelligence', 'Computer Vision', 'Mobile Development', 'Open Source', 'SaaS Platforms', 'Deep Learning', 'Full-Stack Architecture'].map(i => (
+          {['AI / Computer Vision', 'Gamification', 'Startup Ecosystems', 'Agile / Scrum', 'Mobile Development', 'Open Source', 'Tech Events', 'Mentorship'].map(i => (
             <span class="tag tag-neutral">{i}</span>
           ))}
         </div>

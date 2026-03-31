@@ -34,13 +34,14 @@ const delayClass = delay ? `reveal-delay-${delay}` : ''
   <!-- Header -->
   <div class="flex items-start justify-between gap-3">
     <div class="flex-1 min-w-0">
+      <!-- Category + Featured badges — solid pill style, distinct from tech tags -->
       <div class="flex items-center gap-2 mb-2 flex-wrap">
-        <span class={`tag ${categoryColors[project.category]}`} style="font-size: 0.65rem; padding: 0.2rem 0.55rem;">
+        <span class={`badge ${categoryColors[project.category]}`}>
           {categoryLabels[project.category]}
         </span>
         {featured && (
-          <span class="tag tag-amber" style="font-size: 0.65rem; padding: 0.2rem 0.55rem;">
-            Featured
+          <span class="badge badge-featured">
+            ★ Featured
           </span>
         )}
       </div>
@@ -48,14 +49,14 @@ const delayClass = delay ? `reveal-delay-${delay}` : ''
         <span class="group-hover:text-[var(--accent)] transition-colors duration-200">{project.name}</span>
       </h3>
     </div>
+    <!-- Action links -->
     <div class="flex items-center gap-1.5 shrink-0 mt-1">
       {project.liveUrl && (
         <a
           href={project.liveUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="p-2 rounded-xl transition-all duration-200"
-          style="background: var(--accent-dim); color: var(--accent);"
+          class="action-btn action-btn-accent"
           title="Live Demo"
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,11 +68,8 @@ const delayClass = delay ? `reveal-delay-${delay}` : ''
         href={project.url}
         target="_blank"
         rel="noopener noreferrer"
-        class="p-2 rounded-xl transition-all duration-200"
-        style="background: rgba(139, 148, 158, 0.06); color: var(--text-muted);"
+        class="action-btn action-btn-github"
         title="Source Code"
-        onmouseenter="this.style.background='rgba(139,148,158,0.12)';this.style.color='var(--text-primary)'"
-        onmouseleave="this.style.background='rgba(139,148,158,0.06)';this.style.color='var(--text-muted)'"
       >
         <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
@@ -85,16 +83,133 @@ const delayClass = delay ? `reveal-delay-${delay}` : ''
     {project.description}
   </p>
 
-  <!-- Tags -->
+  <!-- Tech tags — square-ish pill, lower contrast, clearly different from top badges -->
   <div class="flex flex-wrap gap-1.5 mt-auto">
     {project.tags.slice(0, 4).map((tag, i) => {
       const colors = ['tag-mint', 'tag-blue', 'tag-purple', 'tag-amber']
       const colorClass = colors[i % colors.length]
       return (
-        <span class={`tag ${colorClass}`} style="font-size: 0.65rem; padding: 0.2rem 0.55rem;">
+        <span class={`tech-tag ${colorClass}`}>
           {tag}
         </span>
       )
     })}
   </div>
 </div>
+
+<style>
+  /* Top badges — solid background, rounded-lg (not full pill), uppercase, prominent */
+  .badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid;
+  }
+
+  .badge.tag-blue {
+    color: #58A6FF;
+    background: rgba(56, 139, 253, 0.15);
+    border-color: rgba(56, 139, 253, 0.3);
+  }
+
+  .badge.tag-mint {
+    color: var(--accent);
+    background: rgba(0, 255, 194, 0.12);
+    border-color: rgba(0, 255, 194, 0.3);
+  }
+
+  .badge.tag-purple {
+    color: var(--purple);
+    background: rgba(123, 97, 255, 0.15);
+    border-color: rgba(123, 97, 255, 0.3);
+  }
+
+  .badge.tag-amber {
+    color: #F0B429;
+    background: rgba(240, 180, 41, 0.12);
+    border-color: rgba(240, 180, 41, 0.3);
+  }
+
+  .badge-featured {
+    color: #F0B429;
+    background: rgba(240, 180, 41, 0.12);
+    border-color: rgba(240, 180, 41, 0.3);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid;
+  }
+
+  /* Bottom tech tags — full pill, light background, smaller, clearly secondary */
+  .tech-tag {
+    font-size: 0.62rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid;
+    opacity: 0.75;
+  }
+
+  .tech-tag.tag-mint {
+    color: var(--accent);
+    background: var(--accent-dim);
+    border-color: rgba(0, 255, 194, 0.12);
+  }
+
+  .tech-tag.tag-blue {
+    color: #58A6FF;
+    background: rgba(56, 139, 253, 0.06);
+    border-color: rgba(56, 139, 253, 0.12);
+  }
+
+  .tech-tag.tag-purple {
+    color: var(--purple);
+    background: var(--purple-dim);
+    border-color: rgba(123, 97, 255, 0.12);
+  }
+
+  .tech-tag.tag-amber {
+    color: #F0B429;
+    background: rgba(240, 180, 41, 0.06);
+    border-color: rgba(240, 180, 41, 0.12);
+  }
+
+  /* Action buttons */
+  .action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem;
+    border-radius: 0.6rem;
+    transition: all 0.2s ease;
+  }
+
+  .action-btn-accent {
+    background: rgba(0, 255, 194, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(0, 255, 194, 0.2);
+  }
+
+  .action-btn-accent:hover {
+    background: rgba(0, 255, 194, 0.18);
+    border-color: rgba(0, 255, 194, 0.35);
+  }
+
+  .action-btn-github {
+    background: rgba(139, 148, 158, 0.06);
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .action-btn-github:hover {
+    background: rgba(139, 148, 158, 0.12);
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+  }
+</style>

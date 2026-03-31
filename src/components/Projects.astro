@@ -1,7 +1,8 @@
 ---
-import { projects } from '../data/projects'
+import { fetchPublicRepos } from '../lib/github'
 import ProjectCard from './ProjectCard.astro'
 
+const projects = await fetchPublicRepos()
 const featured = projects.filter(p => p.featured)
 const rest = projects.filter(p => !p.featured)
 ---

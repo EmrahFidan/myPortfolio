@@ -38,6 +38,7 @@ const glowClass = featured ? 'card-glow' : ''
   <div class="badges">
     <span class={`badge ${categoryColors[project.category]}`}>{categoryLabels[project.category]}</span>
     {featured && <span class="badge badge-featured">★ Featured</span>}
+    {project.contributor && <span class="badge badge-contributor">⇄ Contributor</span>}
     {project.liveUrl && <span class="badge badge-live">● Live</span>}
     {project.stars > 0 && <span class="badge badge-stars">★ {project.stars}</span>}
   </div>
@@ -139,6 +140,7 @@ const glowClass = featured ? 'card-glow' : ''
   .badge-purple { color: var(--purple); background: rgba(123,97,255,0.12); border-color: rgba(123,97,255,0.3); }
   .badge-amber  { color: #F0B429; background: rgba(240,180,41,0.1); border-color: rgba(240,180,41,0.3); }
   .badge-featured { color: #F0B429; background: rgba(240,180,41,0.1); border-color: rgba(240,180,41,0.3); }
+  .badge-contributor { color: var(--purple); background: rgba(123,97,255,0.1); border-color: rgba(123,97,255,0.3); }
   .badge-live   { color: var(--accent); background: rgba(0,255,194,0.08); border-color: rgba(0,255,194,0.35); }
   .badge-stars  { color: #F0B429; background: rgba(240,180,41,0.06); border-color: rgba(240,180,41,0.15); }
 

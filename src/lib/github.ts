@@ -123,7 +123,7 @@ export async function fetchPublicRepos(): Promise<GitHubRepo[]> {
 
   // Fetch own repos (public + private forks if authenticated)
   const endpoint = token
-    ? 'https://api.github.com/user/repos?type=all&sort=updated&per_page=100&affiliation=owner'
+    ? 'https://api.github.com/user/repos?visibility=all&sort=updated&per_page=100'
     : 'https://api.github.com/users/EmrahFidan/repos?type=public&sort=updated&per_page=100'
 
   const res = await fetch(endpoint, { headers })

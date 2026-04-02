@@ -20,12 +20,13 @@ const EXCLUDED = new Set([
   'myday-notifications',
   'AppleDisease_IP-Project',
   'OKA',
+  'RevenueRadar',
+  'Worth2Watch_FrontEnd',
 ])
 
 const FEATURED = new Set([
   'AgriScan',
   'MissingLink',
-  'RevenueRadar',
   'clientflow',
   'xelay-app',
   'YuLaF-YouTube-Language-Filter',

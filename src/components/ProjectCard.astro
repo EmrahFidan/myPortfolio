@@ -34,13 +34,32 @@ const glowClass = featured ? 'card-glow' : ''
   data-category={project.category}
   class={`bento-card ${glowClass} ${project.liveUrl ? 'card-live' : ''} ${project.contributor ? 'card-contributor' : ''} ${size} group reveal ${delay ? `reveal-delay-${delay}` : ''}`}
 >
-  <!-- Badges -->
-  <div class="badges">
-    <span class={`badge ${categoryColors[project.category]}`}>{categoryLabels[project.category]}</span>
-    {featured && <span class="badge badge-featured">★ Featured</span>}
-    {project.contributor && <span class="badge badge-contributor">⇄ Contributor</span>}
-    {project.liveUrl && <span class="badge badge-live">● Live</span>}
-    {project.stars > 0 && <span class="badge badge-stars">★ {project.stars}</span>}
+  <!-- Status chips (prominent) -->
+  <div class="chips">
+    {project.liveUrl && (
+      <span class="chip chip-live">
+        <span class="chip-dot"></span>
+        Live
+      </span>
+    )}
+    {featured && (
+      <span class="chip chip-featured">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Featured
+      </span>
+    )}
+    {project.contributor && (
+      <span class="chip chip-contributor">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 3h5v5M8 21H3v-5M21 3l-7 7M3 21l7-7"/></svg>
+        Contributor
+      </span>
+    )}
+  </div>
+
+  <!-- Category tag (smaller, secondary) -->
+  <div class="cat-row">
+    <span class={`cat-tag ${categoryColors[project.category]}`}>{categoryLabels[project.category]}</span>
+    {project.stars > 0 && <span class="cat-tag cat-stars">★ {project.stars}</span>}
   </div>
 
   <!-- Title -->
@@ -140,22 +159,69 @@ const glowClass = featured ? 'card-glow' : ''
   .bento-card.tall { padding: 1.6rem; }
   .bento-card.wide { padding: 1.5rem; }
 
-  /* ── Badges ── */
-  .badges { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-
-  .badge {
-    font-size: 0.56rem; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; padding: 0.16rem 0.44rem;
-    border-radius: 0.3rem; border: 1px solid;
+  /* ── Status chips — prominent, button-like ── */
+  .chips {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+    margin-bottom: 0.1rem;
   }
-  .badge-blue   { color: #58A6FF; background: rgba(56,139,253,0.12); border-color: rgba(56,139,253,0.3); }
-  .badge-mint   { color: var(--accent); background: rgba(0,255,194,0.1); border-color: rgba(0,255,194,0.3); }
-  .badge-purple { color: var(--purple); background: rgba(123,97,255,0.12); border-color: rgba(123,97,255,0.3); }
-  .badge-amber  { color: #F0B429; background: rgba(240,180,41,0.1); border-color: rgba(240,180,41,0.3); }
-  .badge-featured { color: #F0B429; background: rgba(240,180,41,0.1); border-color: rgba(240,180,41,0.3); }
-  .badge-contributor { color: var(--purple); background: rgba(123,97,255,0.1); border-color: rgba(123,97,255,0.3); }
-  .badge-live   { color: var(--accent); background: rgba(0,255,194,0.08); border-color: rgba(0,255,194,0.35); }
-  .badge-stars  { color: #F0B429; background: rgba(240,180,41,0.06); border-color: rgba(240,180,41,0.15); }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.32rem 0.7rem;
+    border-radius: 0.5rem;
+    border: 1px solid;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  /* Live — solid mint fill */
+  .chip-live {
+    color: #06080F;
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(0,255,194,0.35);
+  }
+  .chip-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #06080F;
+    animation: pulse-dot 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  /* Featured — amber/gold gradient */
+  .chip-featured {
+    color: #111;
+    background: linear-gradient(135deg, #F0B429, #f5c842);
+    border-color: #F0B429;
+    box-shadow: 0 2px 12px rgba(240,180,41,0.35);
+  }
+
+  /* Contributor — purple filled */
+  .chip-contributor {
+    color: #fff;
+    background: var(--purple);
+    border-color: var(--purple);
+    box-shadow: 0 2px 12px rgba(123,97,255,0.35);
+  }
+
+  /* ── Category + stars (smaller, secondary row) ── */
+  .cat-row { display: flex; align-items: center; gap: 0.35rem; }
+
+  .cat-tag {
+    font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 0.14rem 0.45rem;
+    border-radius: 0.25rem; border: 1px solid;
+  }
+  .badge-blue   { color: #58A6FF; background: rgba(56,139,253,0.1); border-color: rgba(56,139,253,0.2); }
+  .badge-mint   { color: var(--accent); background: rgba(0,255,194,0.08); border-color: rgba(0,255,194,0.2); }
+  .badge-purple { color: var(--purple); background: rgba(123,97,255,0.1); border-color: rgba(123,97,255,0.2); }
+  .badge-amber  { color: #F0B429; background: rgba(240,180,41,0.08); border-color: rgba(240,180,41,0.2); }
+  .cat-stars    { color: #F0B429; background: rgba(240,180,41,0.08); border-color: rgba(240,180,41,0.2); }
 
   /* ── Title ── */
   .title {

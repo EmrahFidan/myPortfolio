@@ -165,11 +165,16 @@ export async function fetchPublicRepos(): Promise<GitHubRepo[]> {
       } satisfies GitHubRepo
     })
     .sort((a: GitHubRepo, b: GitHubRepo) => {
-      if (a.featured && !b.featured) return -1
-      if (!a.featured && b.featured) return 1
-      if (a.contributor && !b.contributor) return 1
-      if (!a.contributor && b.contributor) return -1
-      return a.name.localeCompare(b.name)
+      // Priority: live+contributor > live+featured > contributor > featured > rest
+      const score = (r: GitHubRepo) => {
+        if (r.contributor && r.liveUrl) return 5
+        if (r.featured && r.liveUrl) return 4
+        if (r.contributor) return 3
+        if (r.featured) return 2
+        if (r.liveUrl) return 1
+        return 0
+      }
+      return score(b) - score(a) || a.name.localeCompare(b.name)
     })
 
   // Fetch READMEs for featured + contributor projects

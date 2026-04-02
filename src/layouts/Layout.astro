@@ -8,8 +8,10 @@ interface Props {
 
 const {
   title = 'Emrah Fidan — Portfolio',
-  description = 'Software developer portfolio'
+  description = 'Computer Engineer & AI Developer. Building YOLO-based deep learning systems, mobile apps, and web products. Open to new opportunities.',
 } = Astro.props
+
+const siteUrl = 'https://emrahfidan-portfolio.netlify.app'
 ---
 
 <!doctype html>
@@ -22,6 +24,19 @@ const {
     <meta name="description" content={description} />
     <meta name="theme-color" content="#06080F" />
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteUrl}/avatar.jpg`} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}/avatar.jpg`} />
   </head>
   <body class="grain min-h-screen antialiased" style="background-color: var(--bg-deep); color: var(--text-primary);">
     <!-- Global background orbs — fixed so they're visible on scroll -->

@@ -25,18 +25,21 @@ const FEATURED = new Set([
 ])
 
 // Private forks that are contribution projects — manually filled since private
-const CONTRIBUTOR_META: Record<string, { description: string; liveUrl?: string; tags: string[] }> = {
+const CONTRIBUTOR_META: Record<string, { description: string; originalUrl: string; liveUrl?: string; tags: string[] }> = {
   'OKA': {
     description: 'Voice-controlled RC car — multi-modal speech recognition (Whisper + Google Cloud), ArUco marker-based autonomous navigation, real-time computer vision.',
+    originalUrl: 'https://github.com/kedabaliyildirim/OKA',
     tags: ['python', 'computer-vision', 'speech-recognition', 'aruco', 'raspberry-pi'],
   },
   'YuLaF-YouTube-Language-Filter': {
     description: 'Chrome extension to filter YouTube videos by spoken language. Supports 20+ languages — published on Chrome Web Store.',
+    originalUrl: 'https://github.com/vakkaskarakurt/YuLaF-YouTube-Language-Filter',
     liveUrl: 'https://chromewebstore.google.com/detail/yulaf-%E2%80%93-youtube-language/ejfoldoabjeidjdddhomeaojicaemdpm',
     tags: ['chrome-extension', 'javascript', 'youtube', 'language-filter'],
   },
   'UrunBu': {
     description: 'Smart food guide for Migros products — Fullness Factor™ scoring, price/performance analysis, 5-tier quality rating. React + Python data pipeline.',
+    originalUrl: 'https://github.com/vakkaskarakurt/UrunBu',
     liveUrl: 'https://urunbu.netlify.app',
     tags: ['react', 'python', 'data-pipeline', 'nutrition', 'fullness-factor'],
   },
@@ -155,7 +158,7 @@ export async function fetchPublicRepos(): Promise<GitHubRepo[]> {
       return {
         name: repo.name,
         description: meta?.description ?? repo.description ?? '',
-        url: repo.html_url,
+        url: meta?.originalUrl ?? repo.html_url,
         liveUrl: meta?.liveUrl ?? repo.homepage ?? undefined,
         tags,
         category: inferCategory(topics, repo.language ?? '', repo.name),

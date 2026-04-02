@@ -34,32 +34,35 @@ const glowClass = featured ? 'card-glow' : ''
   data-category={project.category}
   class={`bento-card ${glowClass} ${project.liveUrl ? 'card-live' : ''} ${project.contributor ? 'card-contributor' : ''} ${size} group reveal ${delay ? `reveal-delay-${delay}` : ''}`}
 >
-  <!-- Status chips (prominent) -->
-  <div class="chips">
-    {project.liveUrl && (
-      <span class="chip chip-live">
-        <span class="chip-dot"></span>
-        Live
-      </span>
-    )}
-    {featured && (
-      <span class="chip chip-featured">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Featured
-      </span>
-    )}
-    {project.contributor && (
-      <span class="chip chip-contributor">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 3h5v5M8 21H3v-5M21 3l-7 7M3 21l7-7"/></svg>
-        Contributor
-      </span>
-    )}
-  </div>
+  <!-- Top row: chips left, category right -->
+  <div class="top-row">
+    <!-- Status chips (prominent) -->
+    <div class="chips">
+      {project.liveUrl && (
+        <span class="chip chip-live">
+          <span class="chip-dot"></span>
+          Live
+        </span>
+      )}
+      {featured && (
+        <span class="chip chip-featured">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Featured
+        </span>
+      )}
+      {project.contributor && (
+        <span class="chip chip-contributor">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 3h5v5M8 21H3v-5M21 3l-7 7M3 21l7-7"/></svg>
+          Contributor
+        </span>
+      )}
+    </div>
 
-  <!-- Category tag (smaller, secondary) -->
-  <div class="cat-row">
-    <span class={`cat-tag ${categoryColors[project.category]}`}>{categoryLabels[project.category]}</span>
-    {project.stars > 0 && <span class="cat-tag cat-stars">★ {project.stars}</span>}
+    <!-- Category top-right -->
+    <div class="cat-row">
+      <span class={`cat-tag ${categoryColors[project.category]}`}>{categoryLabels[project.category]}</span>
+      {project.stars > 0 && <span class="cat-tag cat-stars">★ {project.stars}</span>}
+    </div>
   </div>
 
   <!-- Title -->
@@ -159,10 +162,18 @@ const glowClass = featured ? 'card-glow' : ''
   .bento-card.tall { padding: 1.6rem; }
   .bento-card.wide { padding: 1.5rem; }
 
+  /* ── Top row: chips + category ── */
+  .top-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   /* ── Status chips — prominent, button-like ── */
   .chips {
     display: flex; flex-wrap: wrap; gap: 0.4rem;
-    margin-bottom: 0.1rem;
   }
 
   .chip {
@@ -209,13 +220,13 @@ const glowClass = featured ? 'card-glow' : ''
     box-shadow: 0 2px 12px rgba(123,97,255,0.35);
   }
 
-  /* ── Category + stars (smaller, secondary row) ── */
-  .cat-row { display: flex; align-items: center; gap: 0.35rem; }
+  /* ── Category top-right ── */
+  .cat-row { display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0; }
 
   .cat-tag {
-    font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em;
-    text-transform: uppercase; padding: 0.14rem 0.45rem;
-    border-radius: 0.25rem; border: 1px solid;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 0.28rem 0.6rem;
+    border-radius: 0.4rem; border: 1px solid;
   }
   .badge-blue   { color: #58A6FF; background: rgba(56,139,253,0.1); border-color: rgba(56,139,253,0.2); }
   .badge-mint   { color: var(--accent); background: rgba(0,255,194,0.08); border-color: rgba(0,255,194,0.2); }

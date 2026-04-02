@@ -13,7 +13,14 @@ export interface GitHubRepo {
   stats?: string[]
 }
 
-const EXCLUDED = new Set(['myPortfolio', 'EmrahFidan'])
+const EXCLUDED = new Set([
+  'myPortfolio',
+  'EmrahFidan',
+  'YuLaF-Privacy',
+  'myday-notifications',
+  'AppleDisease_IP-Project',
+  'OKA',
+])
 
 const FEATURED = new Set([
   'AgriScan',
@@ -26,11 +33,6 @@ const FEATURED = new Set([
 
 // Private forks that are contribution projects — manually filled since private
 const CONTRIBUTOR_META: Record<string, { description: string; originalUrl: string; liveUrl?: string; tags: string[] }> = {
-  'OKA': {
-    description: 'Voice-controlled RC car — multi-modal speech recognition (Whisper + Google Cloud), ArUco marker-based autonomous navigation, real-time computer vision.',
-    originalUrl: 'https://github.com/kedabaliyildirim/OKA',
-    tags: ['python', 'computer-vision', 'speech-recognition', 'aruco', 'raspberry-pi'],
-  },
   'YuLaF-YouTube-Language-Filter': {
     description: 'Chrome extension to filter YouTube videos by spoken language. Supports 20+ languages — published on Chrome Web Store.',
     originalUrl: 'https://github.com/vakkaskarakurt/YuLaF-YouTube-Language-Filter',

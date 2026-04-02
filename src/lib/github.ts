@@ -21,6 +21,7 @@ const FEATURED = new Set([
   'RevenueRadar',
   'clientflow',
   'xelay-app',
+  'YuLaF-YouTube-Language-Filter',
 ])
 
 // Private forks that are contribution projects — manually filled since private
@@ -30,8 +31,8 @@ const CONTRIBUTOR_META: Record<string, { description: string; liveUrl?: string; 
     tags: ['python', 'computer-vision', 'speech-recognition', 'aruco', 'raspberry-pi'],
   },
   'YuLaF-YouTube-Language-Filter': {
-    description: 'Chrome extension to filter YouTube videos by spoken language. Supports 20+ languages with a clean popup UI.',
-    liveUrl: undefined,
+    description: 'Chrome extension to filter YouTube videos by spoken language. Supports 20+ languages — published on Chrome Web Store.',
+    liveUrl: 'https://chromewebstore.google.com/detail/yulaf-%E2%80%93-youtube-language/ejfoldoabjeidjdddhomeaojicaemdpm',
     tags: ['chrome-extension', 'javascript', 'youtube', 'language-filter'],
   },
   'UrunBu': {

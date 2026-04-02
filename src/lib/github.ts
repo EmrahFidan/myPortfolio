@@ -22,6 +22,7 @@ const EXCLUDED = new Set([
   'OKA',
   'RevenueRadar',
   'Worth2Watch_FrontEnd',
+  'solo-habits',
 ])
 
 const FEATURED = new Set([
@@ -35,13 +36,13 @@ const FEATURED = new Set([
 // Private forks that are contribution projects — manually filled since private
 const CONTRIBUTOR_META: Record<string, { description: string; originalUrl: string; liveUrl?: string; tags: string[] }> = {
   'YuLaF-YouTube-Language-Filter': {
-    description: 'Chrome extension to filter YouTube videos by spoken language. Supports 20+ languages — published on Chrome Web Store.',
+    description: 'YouTube videolarını konuşulan dile göre filtreleyen 61+ dil destekli Chrome eklentisi — dil öğrenenlerin akışını hedef dilde içerikle sınırlamasını sağlar.',
     originalUrl: 'https://github.com/vakkaskarakurt/YuLaF-YouTube-Language-Filter',
     liveUrl: 'https://chromewebstore.google.com/detail/yulaf-%E2%80%93-youtube-language/ejfoldoabjeidjdddhomeaojicaemdpm',
     tags: ['chrome-extension', 'javascript', 'youtube', 'language-filter'],
   },
   'UrunBu': {
-    description: 'Smart food guide for Migros products — Fullness Factor™ scoring, price/performance analysis, 5-tier quality rating. React + Python data pipeline.',
+    description: 'Migros ve Şok ürünlerini Fullness Factor™ skoru ve fiyat/performans analiziyle 5 kademede derecelendiren React+Python gıda rehberi — alışverişçilerin sağlıklı ve ekonomik seçim yapmasını kolaylaştırır.',
     originalUrl: 'https://github.com/vakkaskarakurt/UrunBu',
     liveUrl: 'https://urunbu.netlify.app',
     tags: ['react', 'python', 'data-pipeline', 'nutrition', 'fullness-factor'],

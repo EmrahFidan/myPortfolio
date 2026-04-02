@@ -53,14 +53,7 @@ const glowClass = featured ? 'card-glow' : ''
     {project.description}
   </p>
 
-  <!-- README excerpt — hero & tall & wide only -->
-  {(isBig || isWide) && project.readme && (
-    <p class="readme-excerpt">
-      {project.readme}
-    </p>
-  )}
-
-  <!-- Stats — hero & tall only -->
+  <!-- Stats pills — show if available and card is not sm -->
   {isBig && project.stats && project.stats.length > 0 && (
     <div class="stats-row">
       {project.stats.map(stat => (

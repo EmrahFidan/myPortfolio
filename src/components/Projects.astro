@@ -3,17 +3,9 @@ import { fetchPublicRepos } from '../lib/github'
 import ProjectCard from './ProjectCard.astro'
 
 const projects = await fetchPublicRepos()
-
-// Spotlight: live or contributor projects (top 4 max)
 const spotlight = projects.filter(p => p.liveUrl || p.contributor).slice(0, 4)
 const spotlightNames = new Set(spotlight.map(p => p.name))
-
-// Rest: everything not in spotlight
 const rest = projects.filter(p => !spotlightNames.has(p.name))
-
-// Bento size map for spotlight — first is hero, others fill the row
-const spotlightSizes: Array<'hero' | 'tall' | 'wide' | 'sm'> = ['hero', 'tall', 'wide', 'wide']
-
 const allCount = projects.length
 ---
 
@@ -30,8 +22,6 @@ const allCount = projects.length
           <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight" style="font-family: 'Bricolage Grotesque', sans-serif;">Projects</h2>
         </div>
       </div>
-
-      <!-- Filter bar -->
       <div class="filter-bar" id="filter-buttons">
         <button data-filter="all" class="filter-btn active">All <span class="filter-count">{allCount}</span></button>
         <button data-filter="ai-ml" class="filter-btn">AI / ML</button>
@@ -41,46 +31,28 @@ const allCount = projects.length
       </div>
     </div>
 
-    <!-- ── Spotlight section ── -->
+    <!-- Spotlight: Live & Highlighted — 2 col, auto height -->
     {spotlight.length > 0 && (
-      <div class="mb-3">
-        <p class="spotlight-label reveal">⚡ Live & Highlighted</p>
-        <div class="spotlight-grid" id="spotlight-grid">
-          {spotlight.map((project, i) => (
-            <div
-              data-category={project.category}
-              data-section="spotlight"
-              class={`bento-cell spotlight-${spotlightSizes[i]} reveal reveal-delay-${i + 1}`}
-            >
-              <ProjectCard
-                project={project}
-                featured={project.featured}
-                size={spotlightSizes[i]}
-                delay={i + 1}
-              />
+      <div class="mb-10">
+        <p class="section-label accent-label reveal">⚡ Live & Highlighted</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {spotlight.map((p, i) => (
+            <div data-category={p.category} class={`reveal reveal-delay-${Math.min(i+1,4)}`}>
+              <ProjectCard project={p} featured={p.featured} size="wide" delay={i+1} />
             </div>
           ))}
         </div>
       </div>
     )}
 
-    <!-- ── Rest in compact bento ── -->
+    <!-- All other projects — 3 col, auto height -->
     {rest.length > 0 && (
       <div>
-        <p class="rest-label reveal">All Projects</p>
-        <div class="rest-grid" id="rest-grid">
-          {rest.map((project, i) => (
-            <div
-              data-category={project.category}
-              data-section="rest"
-              class={`bento-cell reveal reveal-delay-${Math.min((i % 4) + 1, 5)}`}
-            >
-              <ProjectCard
-                project={project}
-                featured={project.featured}
-                size="sm"
-                delay={(i % 4) + 1}
-              />
+        <p class="section-label muted-label reveal">All Projects</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="rest-grid">
+          {rest.map((p, i) => (
+            <div data-category={p.category} class={`reveal reveal-delay-${Math.min((i%3)+1, 4)}`}>
+              <ProjectCard project={p} featured={p.featured} size="sm" delay={(i%3)+1} />
             </div>
           ))}
         </div>
@@ -91,7 +63,6 @@ const allCount = projects.length
 </section>
 
 <style>
-  /* ── Filter bar ── */
   .filter-bar {
     display: flex; gap: 0.5rem; flex-wrap: wrap;
     padding: 0.65rem 1rem;
@@ -116,70 +87,17 @@ const allCount = projects.length
   }
   .filter-btn.active .filter-count { background: rgba(0,255,194,0.12); color: var(--accent); }
 
-  /* ── Section labels ── */
-  .spotlight-label {
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--accent);
-    margin-bottom: 0.6rem;
+  .section-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 0.75rem;
   }
-  .rest-label {
-    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--text-muted);
-    margin-bottom: 0.6rem; margin-top: 2rem;
-  }
-
-  /* ── Spotlight bento — 4 cols, taller rows ── */
-  .spotlight-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 240px;
-    gap: 6px;
-    grid-auto-flow: dense;
-  }
-
-  .spotlight-hero { grid-column: span 2; grid-row: span 2; }
-  .spotlight-tall { grid-column: span 1; grid-row: span 2; }
-  .spotlight-wide { grid-column: span 2; grid-row: span 1; }
-  .spotlight-sm   { grid-column: span 1; grid-row: span 1; }
-
-  /* ── Rest bento — 4 cols, standard rows ── */
-  .rest-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 220px;
-    gap: 6px;
-    grid-auto-flow: dense;
-  }
-
-  /* All cells fill height */
-  .bento-cell { min-height: 0; }
-  .bento-cell > div { height: 100%; }
-
-  /* Tablet */
-  @media (max-width: 860px) {
-    .spotlight-grid, .rest-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .spotlight-hero { grid-column: span 2; grid-row: span 2; }
-    .spotlight-tall { grid-column: span 1; grid-row: span 2; }
-    .spotlight-wide { grid-column: span 2; grid-row: span 1; }
-    .spotlight-sm   { grid-column: span 1; grid-row: span 1; }
-  }
-
-  /* Mobile */
-  @media (max-width: 480px) {
-    .spotlight-grid, .rest-grid {
-      grid-template-columns: 1fr; grid-auto-rows: auto;
-    }
-    .spotlight-hero, .spotlight-tall, .spotlight-wide, .spotlight-sm {
-      grid-column: span 1; grid-row: span 1;
-    }
-  }
+  .accent-label { color: var(--accent); }
+  .muted-label  { color: var(--text-muted); margin-top: 0.5rem; }
 </style>
 
 <script>
   const buttons = document.querySelectorAll('.filter-btn')
-  const cells   = document.querySelectorAll('.bento-cell[data-category]')
+  const cards   = document.querySelectorAll('[data-category]')
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -187,19 +105,19 @@ const allCount = projects.length
       buttons.forEach(b => b.classList.remove('active'))
       btn.classList.add('active')
 
-      cells.forEach(cell => {
-        const el = cell as HTMLElement
+      cards.forEach(card => {
+        const el = card as HTMLElement
         const visible = filter === 'all' || el.dataset.category === filter
         if (visible) {
           el.style.display = ''
           requestAnimationFrame(() => {
             el.style.transition = 'opacity 0.25s ease, transform 0.25s ease'
             el.style.opacity = '1'
-            el.style.transform = 'scale(1)'
+            el.style.transform = 'translateY(0)'
           })
         } else {
           el.style.opacity = '0'
-          el.style.transform = 'scale(0.96)'
+          el.style.transform = 'translateY(8px)'
           setTimeout(() => { el.style.display = 'none' }, 250)
         }
       })

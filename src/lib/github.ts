@@ -21,7 +21,6 @@ const EXCLUDED = new Set([
   'AppleDisease_IP-Project',
   'OKA',
   'RevenueRadar',
-  'Worth2Watch_FrontEnd',
   'solo-habits',
 ])
 
@@ -33,19 +32,56 @@ const FEATURED = new Set([
   'YuLaF-YouTube-Language-Filter',
 ])
 
-// Private forks that are contribution projects — manually filled since private
-const CONTRIBUTOR_META: Record<string, { description: string; originalUrl: string; liveUrl?: string; tags: string[] }> = {
+interface ContributorMeta {
+  owner?: string                  // repo owner (defaults to 'EmrahFidan')
+  description: string
+  originalUrl: string
+  liveUrl?: string
+  tags: string[]
+  category?: GitHubRepo['category']
+  featured?: boolean
+}
+
+// Projects shown via manual metadata — covers:
+//  - private forks (contributions to others' repos)
+//  - collaborator repos owned by other users/orgs
+//  - own private repos worth showcasing
+const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
   'YuLaF-YouTube-Language-Filter': {
+    owner: 'vakkaskarakurt',
     description: 'YouTube videolarını konuşulan dile göre filtreleyen 61+ dil destekli Chrome eklentisi — dil öğrenenlerin akışını hedef dilde içerikle sınırlamasını sağlar.',
     originalUrl: 'https://github.com/vakkaskarakurt/YuLaF-YouTube-Language-Filter',
     liveUrl: 'https://chromewebstore.google.com/detail/yulaf-%E2%80%93-youtube-language/ejfoldoabjeidjdddhomeaojicaemdpm',
     tags: ['chrome-extension', 'javascript', 'youtube', 'language-filter'],
   },
   'UrunBu': {
+    owner: 'vakkaskarakurt',
     description: 'Migros ve Şok ürünlerini Fullness Factor™ skoru ve fiyat/performans analiziyle 5 kademede derecelendiren React+Python gıda rehberi — alışverişçilerin sağlıklı ve ekonomik seçim yapmasını kolaylaştırır.',
     originalUrl: 'https://github.com/vakkaskarakurt/UrunBu',
     liveUrl: 'https://urunbu.netlify.app',
     tags: ['react', 'python', 'data-pipeline', 'nutrition', 'fullness-factor'],
+  },
+  'Worth2Watch_FrontEnd': {
+    owner: 'kedabaliyildirim',
+    description: 'İzlenecek film ve dizileri topluluk puanlarıyla keşfettiren Vue 3 SPA — kullanıcıların kişisel izleme listesi oluşturup yapımları "izlemeye değer mi" perspektifinden değerlendirmesini sağlar.',
+    originalUrl: 'https://github.com/kedabaliyildirim/Worth2Watch_FrontEnd',
+    liveUrl: 'https://worth2-watch-front-end.vercel.app',
+    tags: ['vue', 'spa', 'movies', 'recommendations'],
+    category: 'web',
+  },
+  'tvshow-complexity': {
+    owner: 'TV-SHOW-COMPLEXITY',
+    description: 'Dizi ve film altyazılarını CEFR (A1–C2) dil seviyesine göre analiz eden Python aracı — dil öğrenenlerin seviyelerine uygun izleme listeleri seçmesini sağlar.',
+    originalUrl: 'https://github.com/TV-SHOW-COMPLEXITY/tvshow-complexity',
+    tags: ['python', 'nlp', 'cefr', 'language-learning'],
+    category: 'ai-ml',
+  },
+  'mapfilter': {
+    description: 'Google Haritalar\'ın yetersiz filtreleme deneyimini çözen Flutter mobil uygulaması — kullanıcıların idari sınır seçerek bölgesel arama yapmasını ve istenmeyen mekanları engellemesini sağlar.',
+    originalUrl: 'https://github.com/EmrahFidan/mapfilter',
+    tags: ['flutter', 'dart', 'google-maps', 'firebase'],
+    category: 'mobile',
+    featured: true,
   },
 }
 
@@ -145,15 +181,15 @@ export async function fetchPublicRepos(): Promise<GitHubRepo[]> {
   const repos: GitHubRepo[] = data
     .filter((repo: any) => {
       if (EXCLUDED.has(repo.name)) return false
-      // Include: own public repos + private forks (contributor projects)
-      if (!repo.fork && !repo.private) return true
-      if (repo.fork && repo.private && CONTRIBUTOR_META[repo.name]) return true
-      return false
+      // Always show projects with manual metadata (private forks, collab repos, own private highlights)
+      if (CONTRIBUTOR_META[repo.name]) return true
+      // Otherwise: only own public, non-fork repos
+      return !repo.fork && !repo.private && repo.owner?.login === 'EmrahFidan'
     })
     .map((repo: any) => {
       const topics: string[] = repo.topics ?? []
-      const isFork = !!repo.fork
       const meta = CONTRIBUTOR_META[repo.name]
+      const isOwnProject = repo.owner?.login === 'EmrahFidan' && !repo.fork
 
       const tags = meta?.tags ?? (
         topics.length > 0 ? topics.slice(0, 5) : [repo.language].filter(Boolean)
@@ -165,9 +201,9 @@ export async function fetchPublicRepos(): Promise<GitHubRepo[]> {
         url: meta?.originalUrl ?? repo.html_url,
         liveUrl: meta?.liveUrl ?? repo.homepage ?? undefined,
         tags,
-        category: inferCategory(topics, repo.language ?? '', repo.name),
-        featured: FEATURED.has(repo.name),
-        contributor: isFork,
+        category: meta?.category ?? inferCategory(topics, repo.language ?? '', repo.name),
+        featured: meta?.featured ?? FEATURED.has(repo.name),
+        contributor: !isOwnProject,
         language: repo.language ?? '',
         stars: repo.stargazers_count ?? 0,
       } satisfies GitHubRepo
@@ -190,7 +226,7 @@ export async function fetchPublicRepos(): Promise<GitHubRepo[]> {
     repos
       .filter(r => r.featured || r.contributor)
       .map(async r => {
-        const owner = r.contributor ? 'EmrahFidan' : 'EmrahFidan'
+        const owner = CONTRIBUTOR_META[r.name]?.owner ?? 'EmrahFidan'
         const { excerpt, stats } = await fetchReadme(owner, r.name, headers)
         if (excerpt) r.readme = excerpt
         if (stats.length) r.stats = stats

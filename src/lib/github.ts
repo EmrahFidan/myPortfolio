@@ -181,8 +181,10 @@ export async function fetchPublicRepos(): Promise<GitHubRepo[]> {
   const repos: GitHubRepo[] = data
     .filter((repo: any) => {
       if (EXCLUDED.has(repo.name)) return false
-      // Always show projects with manual metadata (private forks, collab repos, own private highlights)
-      if (CONTRIBUTOR_META[repo.name]) return true
+      const meta = CONTRIBUTOR_META[repo.name]
+      // Show meta-defined projects only when the API row matches the canonical owner —
+      // prevents duplicates when both an upstream collab repo and a local fork exist
+      if (meta) return repo.owner?.login === (meta.owner ?? 'EmrahFidan')
       // Otherwise: only own public, non-fork repos
       return !repo.fork && !repo.private && repo.owner?.login === 'EmrahFidan'
     })

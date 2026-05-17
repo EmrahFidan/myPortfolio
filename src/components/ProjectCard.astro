@@ -61,7 +61,6 @@ const glowClass = featured ? 'card-glow' : ''
     <!-- Category top-right -->
     <div class="cat-row">
       <span class={`cat-tag ${categoryColors[project.category]}`}>{categoryLabels[project.category]}</span>
-      {project.stars > 0 && <span class="cat-tag cat-stars">★ {project.stars}</span>}
     </div>
   </div>
 
@@ -232,7 +231,6 @@ const glowClass = featured ? 'card-glow' : ''
   .badge-mint   { color: var(--accent); background: rgba(0,255,194,0.08); border-color: rgba(0,255,194,0.2); }
   .badge-purple { color: var(--purple); background: rgba(123,97,255,0.1); border-color: rgba(123,97,255,0.2); }
   .badge-amber  { color: #F0B429; background: rgba(240,180,41,0.08); border-color: rgba(240,180,41,0.2); }
-  .cat-stars    { color: #F0B429; background: rgba(240,180,41,0.08); border-color: rgba(240,180,41,0.2); }
 
   /* ── Title ── */
   .title {

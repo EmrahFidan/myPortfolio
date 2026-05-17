@@ -40,6 +40,7 @@ interface ContributorMeta {
   tags: string[]
   category?: GitHubRepo['category']
   featured?: boolean
+  priority?: number               // higher = earlier in the list (default 0)
 }
 
 // Projects shown via manual metadata — covers:
@@ -53,6 +54,8 @@ const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
     originalUrl: 'https://github.com/vakkaskarakurt/YuLaF-YouTube-Language-Filter',
     liveUrl: 'https://chromewebstore.google.com/detail/yulaf-%E2%80%93-youtube-language/ejfoldoabjeidjdddhomeaojicaemdpm',
     tags: ['chrome-extension', 'javascript', 'youtube', 'language-filter'],
+    featured: true,
+    priority: 100,
   },
   'UrunBu': {
     owner: 'vakkaskarakurt',
@@ -65,16 +68,18 @@ const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
     owner: 'kedabaliyildirim',
     description: 'İzlenecek film ve dizileri topluluk puanlarıyla keşfettiren Vue 3 SPA — kullanıcıların kişisel izleme listesi oluşturup yapımları "izlemeye değer mi" perspektifinden değerlendirmesini sağlar.',
     originalUrl: 'https://github.com/kedabaliyildirim/Worth2Watch_FrontEnd',
-    liveUrl: 'https://worth2-watch-front-end.vercel.app',
+    liveUrl: 'https://worth2watch.netlify.app',
     tags: ['vue', 'spa', 'movies', 'recommendations'],
     category: 'web',
   },
   'tvshow-complexity': {
     owner: 'TV-SHOW-COMPLEXITY',
-    description: 'Dizi ve film altyazılarını CEFR (A1–C2) dil seviyesine göre analiz eden Python aracı — dil öğrenenlerin seviyelerine uygun izleme listeleri seçmesini sağlar.',
+    description: 'Dizi ve film altyazılarını CEFR (A1–C2) dil seviyesine, kelime kapsamına ve konuşma hızına (WPM) göre analiz eden Python+React platformu — dil öğrenenlerin seviyelerine uygun izleme listeleri seçmesini sağlar.',
     originalUrl: 'https://github.com/TV-SHOW-COMPLEXITY/tvshow-complexity',
-    tags: ['python', 'nlp', 'cefr', 'language-learning'],
+    tags: ['python', 'flask', 'react', 'nlp', 'cefr'],
     category: 'ai-ml',
+    featured: true,
+    priority: 50,
   },
   'mapfilter': {
     description: 'Google Haritalar\'ın yetersiz filtreleme deneyimini çözen Flutter mobil uygulaması — kullanıcıların idari sınır seçerek bölgesel arama yapmasını ve istenmeyen mekanları engellemesini sağlar.',
@@ -211,7 +216,11 @@ export async function fetchPublicRepos(): Promise<GitHubRepo[]> {
       } satisfies GitHubRepo
     })
     .sort((a: GitHubRepo, b: GitHubRepo) => {
-      // Priority: live+contributor > live+featured > contributor > featured > rest
+      // Manual priority (meta.priority) wins everything
+      const pa = CONTRIBUTOR_META[a.name]?.priority ?? 0
+      const pb = CONTRIBUTOR_META[b.name]?.priority ?? 0
+      if (pa !== pb) return pb - pa
+      // Then: live+contributor > live+featured > contributor > featured > rest
       const score = (r: GitHubRepo) => {
         if (r.contributor && r.liveUrl) return 5
         if (r.featured && r.liveUrl) return 4

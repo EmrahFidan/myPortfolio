@@ -3,7 +3,7 @@ import { fetchPublicRepos } from '../lib/github'
 import ProjectCard from './ProjectCard.astro'
 
 const projects = await fetchPublicRepos()
-const spotlight = projects.filter(p => p.liveUrl || p.contributor).slice(0, 4)
+const spotlight = projects.filter(p => p.liveUrl || p.contributor || p.featured).slice(0, 4)
 const spotlightNames = new Set(spotlight.map(p => p.name))
 const rest = projects.filter(p => !spotlightNames.has(p.name))
 const allCount = projects.length

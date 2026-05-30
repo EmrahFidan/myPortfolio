@@ -22,12 +22,12 @@ const EXCLUDED = new Set([
   'OKA',
   'RevenueRadar',
   'solo-habits',
+  'clientflow',
 ])
 
 const FEATURED = new Set([
   'AgriScan',
   'MissingLink',
-  'clientflow',
   'xelay-app',
   'YuLaF-YouTube-Language-Filter',
 ])
@@ -85,6 +85,7 @@ const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
   'mapfilter': {
     description: 'Google Haritalar\'ın yetersiz filtreleme deneyimini çözen Flutter mobil uygulaması — kullanıcıların idari sınır seçerek bölgesel arama yapmasını ve istenmeyen mekanları engellemesini sağlar.',
     originalUrl: 'https://github.com/EmrahFidan/mapfilter',
+    liveUrl: 'https://github.com/EmrahFidan/mapfilter/releases/tag/v1.0.0',
     tags: ['flutter', 'dart', 'google-maps', 'firebase'],
     category: 'mobile',
     featured: true,

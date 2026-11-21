@@ -18,6 +18,7 @@ const EXCLUDED = new Set([
   'EmrahFidan',
   'YuLaF-Privacy',
   'myday-notifications',
+  'AppleDisease_IP-Project',
   'OKA',
   'RevenueRadar',
   'solo-habits',
@@ -47,24 +48,6 @@ interface ContributorMeta {
 //  - collaborator repos owned by other users/orgs
 //  - own private repos worth showcasing
 const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
-  'churn-xai-profit': {
-    description: 'Code for my first-author paper "Predictability Is Not Profitability": an explainable, cost-sensitive evaluation of customer churn across 5 datasets from 3 sectors (Information, 2026).',
-    originalUrl: 'https://github.com/EmrahFidan/churn-xai-profit',
-    liveUrl: 'https://doi.org/10.3390/info17090880',
-    tags: ['explainable-ai', 'shap', 'churn', 'cost-sensitive', 'python'],
-    category: 'ai-ml',
-    featured: true,
-    priority: 90,
-  },
-  'AppleDisease_IP-Project': {
-    description: 'Code for my first-author paper on apple leaf disease recognition: a class-imbalance ablation study comparing YOLOv11x with 3 CNN architectures (AgriEngineering, 2026).',
-    originalUrl: 'https://github.com/EmrahFidan/AppleDisease_IP-Project',
-    liveUrl: 'https://doi.org/10.3390/agriengineering8020070',
-    tags: ['yolov11', 'computer-vision', 'class-imbalance', 'deep-learning'],
-    category: 'ai-ml',
-    featured: true,
-    priority: 80,
-  },
   'YuLaF-YouTube-Language-Filter': {
     owner: 'vakkaskarakurt',
     description: 'Chrome extension that filters YouTube videos by spoken language (61+ languages), helping language learners keep their feed in the target language.',
@@ -72,6 +55,7 @@ const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
     liveUrl: 'https://chromewebstore.google.com/detail/yulaf-%E2%80%93-youtube-language/ejfoldoabjeidjdddhomeaojicaemdpm',
     tags: ['chrome-extension', 'javascript', 'youtube', 'language-filter'],
     featured: true,
+    priority: 100,
   },
   'UrunBu': {
     owner: 'vakkaskarakurt',
@@ -96,6 +80,7 @@ const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
     tags: ['django', 'react', 'spacy', 'nlp', 'cefr'],
     category: 'ai-ml',
     featured: true,
+    priority: 50,
   },
   'mapfilter': {
     description: 'Flutter app that adds proper filtering to Google Maps: search within chosen administrative boundaries and hide unwanted places.',
@@ -239,12 +224,11 @@ export async function fetchPublicRepos(): Promise<GitHubRepo[]> {
       if (pa !== pb) return pb - pa
       // Then: live+contributor > live+featured > contributor > featured > rest
       const score = (r: GitHubRepo) => {
-        // Own work first; contributions to others' repos after
-        if (!r.contributor && r.featured && r.liveUrl) return 6
-        if (!r.contributor && r.featured) return 5
-        if (!r.contributor && r.liveUrl) return 4
-        if (r.contributor && r.liveUrl) return 3
-        if (r.contributor) return 2
+        if (r.contributor && r.liveUrl) return 5
+        if (r.featured && r.liveUrl) return 4
+        if (r.contributor) return 3
+        if (r.featured) return 2
+        if (r.liveUrl) return 1
         return 0
       }
       return score(b) - score(a) || a.name.localeCompare(b.name)

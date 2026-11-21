@@ -50,7 +50,7 @@ interface ContributorMeta {
 const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
   'YuLaF-YouTube-Language-Filter': {
     owner: 'vakkaskarakurt',
-    description: 'YouTube videolarını konuşulan dile göre filtreleyen 61+ dil destekli Chrome eklentisi — dil öğrenenlerin akışını hedef dilde içerikle sınırlamasını sağlar.',
+    description: 'Chrome extension that filters YouTube videos by spoken language (61+ languages), helping language learners keep their feed in the target language.',
     originalUrl: 'https://github.com/vakkaskarakurt/YuLaF-YouTube-Language-Filter',
     liveUrl: 'https://chromewebstore.google.com/detail/yulaf-%E2%80%93-youtube-language/ejfoldoabjeidjdddhomeaojicaemdpm',
     tags: ['chrome-extension', 'javascript', 'youtube', 'language-filter'],
@@ -59,14 +59,14 @@ const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
   },
   'UrunBu': {
     owner: 'vakkaskarakurt',
-    description: 'Migros ve Şok ürünlerini Fullness Factor™ skoru ve fiyat/performans analiziyle 5 kademede derecelendiren React+Python gıda rehberi — alışverişçilerin sağlıklı ve ekonomik seçim yapmasını kolaylaştırır.',
+    description: 'React + Python food guide that rates Migros and Şok products on five levels using a Fullness Factor™ score and price/performance analysis, helping shoppers make healthier, cheaper choices.',
     originalUrl: 'https://github.com/vakkaskarakurt/UrunBu',
     liveUrl: 'https://urunbu.netlify.app',
     tags: ['react', 'python', 'data-pipeline', 'nutrition', 'fullness-factor'],
   },
   'Worth2Watch_FrontEnd': {
     owner: 'kedabaliyildirim',
-    description: 'İzlenecek film ve dizileri topluluk puanlarıyla keşfettiren Vue 3 SPA — kullanıcıların kişisel izleme listesi oluşturup yapımları "izlemeye değer mi" perspektifinden değerlendirmesini sağlar.',
+    description: 'Vue 3 SPA for discovering films and series through community ratings, with personal watchlists and a "worth watching?" perspective.',
     originalUrl: 'https://github.com/kedabaliyildirim/Worth2Watch_FrontEnd',
     liveUrl: 'https://worth2watch.netlify.app',
     tags: ['vue', 'spa', 'movies', 'recommendations'],
@@ -74,7 +74,7 @@ const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
   },
   'tvshow-complexity': {
     owner: 'TV-SHOW-COMPLEXITY',
-    description: 'Dizi ve film altyazılarını CEFR (A1–C2) dil seviyesine, kelime kapsamına ve konuşma hızına (WPM) göre analiz eden Python+React platformu — dil öğrenenlerin seviyelerine uygun izleme listeleri seçmesini sağlar.',
+    description: 'Python + React platform that rates film and series subtitles by CEFR level (A1–C2), vocabulary coverage and speaking speed (WPM), so learners can pick watchlists that match their level.',
     originalUrl: 'https://github.com/TV-SHOW-COMPLEXITY/tvshow-complexity',
     liveUrl: 'https://tvshow-complexity.vercel.app',
     tags: ['django', 'react', 'spacy', 'nlp', 'cefr'],
@@ -83,7 +83,7 @@ const CONTRIBUTOR_META: Record<string, ContributorMeta> = {
     priority: 50,
   },
   'mapfilter': {
-    description: 'Google Haritalar\'ın yetersiz filtreleme deneyimini çözen Flutter mobil uygulaması — kullanıcıların idari sınır seçerek bölgesel arama yapmasını ve istenmeyen mekanları engellemesini sağlar.',
+    description: 'Flutter app that adds proper filtering to Google Maps: search within chosen administrative boundaries and hide unwanted places.',
     originalUrl: 'https://github.com/EmrahFidan/mapfilter',
     liveUrl: 'https://github.com/EmrahFidan/mapfilter/releases/tag/v1.0.0',
     tags: ['flutter', 'dart', 'google-maps', 'firebase'],

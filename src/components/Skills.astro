@@ -1,11 +1,36 @@
 ---
-const skills = {
-  frontend: { items: ['React', 'React Native', 'Next.js', 'Astro', 'Tailwind CSS', 'TypeScript'], tag: 'tag-mint' },
-  backend: { items: ['FastAPI', 'Firebase', 'Node.js', 'Python'], tag: 'tag-purple' },
-  aiml: { items: ['YOLOv11', 'CTGAN', 'Groq', 'Gemini AI', 'Deep Learning', 'Computer Vision'], tag: 'tag-blue' },
-  tools: { items: ['Git', 'Docker', 'Expo', 'Vite', 'Vercel', 'Netlify'], tag: 'tag-amber' },
-  mobile: { items: ['Flutter', 'Dart', 'PostgreSQL', 'REST APIs'], tag: 'tag-neutral' },
-}
+const groups = [
+  {
+    title: 'Project & Process', icon: '🧭', span: 'md:col-span-4', cls: 'card-glow', tag: 'tag-mint',
+    iconStyle: 'background: var(--accent-dim); border: 1px solid rgba(0, 255, 194, 0.15);',
+    items: ['Project Management', 'Requirements Analysis', 'Stakeholder Management', 'Process Improvement', 'Agile / Scrum', 'Jira', 'Notion', 'Trello'],
+  },
+  {
+    title: 'Frontend', icon: '🖥️', span: 'md:col-span-2', cls: 'card-purple', tag: 'tag-purple',
+    iconStyle: 'background: var(--purple-dim); border: 1px solid rgba(123, 97, 255, 0.15);',
+    items: ['React', 'Next.js', 'Vue.js', 'Astro', 'TypeScript', 'Tailwind CSS'],
+  },
+  {
+    title: 'AI / Machine Learning', icon: '🤖', span: 'md:col-span-3', cls: '', tag: 'tag-blue',
+    iconStyle: 'background: rgba(56, 139, 253, 0.08); border: 1px solid rgba(56, 139, 253, 0.15);',
+    items: ['PyTorch', 'TensorFlow', 'YOLO', 'OpenCV', 'SHAP', 'CTGAN', 'Computer Vision', 'Gemini AI', 'Groq'],
+  },
+  {
+    title: 'Backend & Data', icon: '⚙️', span: 'md:col-span-3', cls: '', tag: 'tag-amber',
+    iconStyle: 'background: rgba(240, 180, 41, 0.08); border: 1px solid rgba(240, 180, 41, 0.15);',
+    items: ['Python', 'FastAPI', 'Node.js', 'Firebase', 'PostgreSQL', 'REST APIs', 'Pandas', 'NumPy'],
+  },
+  {
+    title: 'Mobile', icon: '📱', span: 'md:col-span-3', cls: '', tag: 'tag-rose',
+    iconStyle: 'background: rgba(247, 129, 102, 0.08); border: 1px solid rgba(247, 129, 102, 0.15);',
+    items: ['Flutter', 'Dart', 'React Native', 'Expo'],
+  },
+  {
+    title: 'Tools', icon: '🛠️', span: 'md:col-span-3', cls: '', tag: 'tag-neutral',
+    iconStyle: 'background: rgba(139, 148, 158, 0.06); border: 1px solid var(--border-subtle);',
+    items: ['Git', 'GitHub', 'Docker', 'Vite', 'Vercel', 'Netlify'],
+  },
+]
 ---
 
 <section id="skills" class="py-24 px-6 relative">
@@ -14,76 +39,23 @@ const skills = {
   <div class="max-w-6xl mx-auto">
     <div class="mb-12 reveal">
       <p class="text-xs font-semibold tracking-[0.2em] uppercase mb-3" style="color: var(--accent);">Expertise</p>
-      <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight" style="font-family: 'Bricolage Grotesque', sans-serif;">Tech Stack</h2>
+      <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight" style="font-family: 'Bricolage Grotesque', sans-serif;">Skills</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-6 gap-5">
-
-      <!-- Frontend — wide -->
-      <div class="card card-glow md:col-span-4 reveal reveal-delay-1">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: var(--accent-dim); border: 1px solid rgba(0, 255, 194, 0.15);">🖥️</div>
-          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Frontend</h3>
+      {groups.map((g, i) => (
+        <div class={`card ${g.cls} ${g.span} reveal reveal-delay-${Math.min(i + 1, 5)}`}>
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style={g.iconStyle}>{g.icon}</div>
+            <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">{g.title}</h3>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {g.items.map(skill => (
+              <span class={`tag ${g.tag}`}>{skill}</span>
+            ))}
+          </div>
         </div>
-        <div class="flex flex-wrap gap-2">
-          {skills.frontend.items.map(skill => (
-            <span class={`tag ${skills.frontend.tag}`}>{skill}</span>
-          ))}
-        </div>
-      </div>
-
-      <!-- Backend -->
-      <div class="card card-purple md:col-span-2 reveal reveal-delay-2">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: var(--purple-dim); border: 1px solid rgba(123, 97, 255, 0.15);">⚙️</div>
-          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Backend</h3>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          {skills.backend.items.map(skill => (
-            <span class={`tag ${skills.backend.tag}`}>{skill}</span>
-          ))}
-        </div>
-      </div>
-
-      <!-- AI/ML — wide -->
-      <div class="card md:col-span-3 reveal reveal-delay-3" style="border-color: rgba(56, 139, 253, 0.15);">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(56, 139, 253, 0.08); border: 1px solid rgba(56, 139, 253, 0.15);">🤖</div>
-          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">AI / Machine Learning</h3>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          {skills.aiml.items.map(skill => (
-            <span class={`tag ${skills.aiml.tag}`}>{skill}</span>
-          ))}
-        </div>
-      </div>
-
-      <!-- Tools -->
-      <div class="card md:col-span-2 reveal reveal-delay-4">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(240, 180, 41, 0.08); border: 1px solid rgba(240, 180, 41, 0.15);">🛠️</div>
-          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Tools</h3>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          {skills.tools.items.map(skill => (
-            <span class={`tag ${skills.tools.tag}`}>{skill}</span>
-          ))}
-        </div>
-      </div>
-
-      <!-- Mobile & Other -->
-      <div class="card md:col-span-1 reveal reveal-delay-5">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm" style="background: rgba(139, 148, 158, 0.06); border: 1px solid var(--border-subtle);">📱</div>
-          <h3 class="font-bold text-base" style="font-family: 'Bricolage Grotesque', sans-serif;">Other</h3>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          {skills.mobile.items.map(skill => (
-            <span class={`tag ${skills.mobile.tag}`}>{skill}</span>
-          ))}
-        </div>
-      </div>
-
+      ))}
     </div>
   </div>
 </section>

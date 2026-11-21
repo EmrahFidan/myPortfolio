@@ -23,6 +23,7 @@ const EXCLUDED = new Set([
   'RevenueRadar',
   'solo-habits',
   'clientflow',
+  'churn-xai-profit',
 ])
 
 const FEATURED = new Set([
